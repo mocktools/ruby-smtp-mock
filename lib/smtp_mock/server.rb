@@ -7,7 +7,7 @@ module SmtpMock
     # def initialize(**options)
     # end
 
-    # def self.olo(**)
+    # def self.olo
     #   fork { exec("#{SmtpMock::BINARY_PATH} -log") }
     # end
   end

@@ -4,4 +4,12 @@ detectors:
 
   UtilityFunction:
     exclude:
-      - SmtpMock#method
+      - SmtpMock::CommandLineArgsBuilder#to_camel_case
+
+  NestedIterators:
+    exclude:
+      - SmtpMock::CommandLineArgsBuilder#define_attribute
+
+  TooManyConstants:
+    exclude:
+      - SmtpMock
