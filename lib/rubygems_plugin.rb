@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
+require_relative 'smtp_mock'
+
 Gem.post_install do
-  unless ::File.exist?('bin/smtpmock')
-    `cd ./bin && curl -sL https://raw.githubusercontent.com/mocktools/go-smtp-mock/master/script/download.sh | bash`
-    puts 'Downloaded latest smtpmock binary'
+  unless ::File.exist?(SmtpMock::BINARY_PATH)
+    puts(system(SmtpMock::INSTALL) ? SmtpMock::INSTALLATION_SUCCESSFUL : SmtpMock::INSTALLATION_FAILED)
   end
 end
