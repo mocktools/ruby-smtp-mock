@@ -1,0 +1,124 @@
+version: 2.1
+
+defaults: &defaults
+  working_directory: ~/ruby-smtp-mock
+  docker:
+    - image: cimg/ruby:<< parameters.ruby-version >>
+
+orbs:
+  ruby: circleci/ruby@1.2.0
+
+references:
+  restore_bundle_cache: &restore_bundle_cache
+    restore_cache:
+      keys:
+        - ruby-smtp-mock-{{ checksum "smtp_mock.gemspec" }}
+
+  bundle_install: &bundle_install
+    run:
+      name: Installing gems
+      command: |
+            bundle config set --local path 'vendor/bundle'
+            bundle install
+
+  save_bundle_cache: &save_bundle_cache
+    save_cache:
+      key: ruby-smtp-mock-{{ checksum "smtp_mock.gemspec" }}
+      paths:
+        - vendor/bundle
+
+  install_codeclimate_reporter: &install_codeclimate_reporter
+    run:
+      name: Installing CodeClimate test reporter
+      command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+
+jobs:
+  linters-ruby:
+    parameters:
+      ruby-version:
+        type: string
+
+    <<: *defaults
+
+    steps:
+      - checkout
+
+      - <<: *restore_bundle_cache
+      - <<: *bundle_install
+      - <<: *save_bundle_cache
+
+      - run:
+          name: Running Overcommit
+          command: |
+            bundle exec overcommit -s
+            SKIP=AuthorEmail,AuthorName bundle exec overcommit -r
+
+  tests-ruby:
+    parameters:
+      ruby-version:
+        type: string
+
+    <<: *defaults
+
+    steps:
+      - checkout
+
+      - <<: *restore_bundle_cache
+      - <<: *bundle_install
+      - <<: *save_bundle_cache
+      - <<: *install_codeclimate_reporter
+
+      - run:
+          name: Running RSpec
+          command: |
+            ./cc-test-reporter before-build
+            bundle exec rspec
+
+      # - run:
+      #     name: Creating CodeClimate test coverage report
+      #     command: |
+      #       ./cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.$CIRCLE_NODE_INDEX.json"
+
+      - store_artifacts:
+          name: Saving Simplecov coverage artifacts
+          path: ~/ruby-smtp-mock/coverage
+          destination: coverage
+
+      # - deploy:
+      #     name: Uploading CodeClimate test coverage report
+      #     command: |
+      #       ./cc-test-reporter sum-coverage --output - --parts $CIRCLE_NODE_TOTAL coverage/codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
+
+  compatibility-ruby:
+    parameters:
+      ruby-version:
+        type: string
+    docker:
+      - image: cimg/ruby:<< parameters.ruby-version >>
+    steps:
+      - checkout
+      - ruby/install-deps:
+          bundler-version: "2.3.4"
+          with-cache: false
+          path: './vendor/custom_bundle'
+      - run:
+          name: Running compatibility tests
+          command: bundle exec rspec
+
+workflows:
+  build_and_test:
+    jobs:
+      - linters-ruby:
+          matrix:
+            parameters:
+              ruby-version: ["2.5"]
+      - tests-ruby:
+          matrix:
+            parameters:
+              ruby-version: ["2.5"]
+      - compatibility-ruby:
+          matrix:
+            parameters:
+              ruby-version: ["2.6", "2.7", "3.0", "3.1"]
