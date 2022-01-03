@@ -6,6 +6,7 @@
 /pkg/
 /spec/reports/
 /tmp/
+/bin/smtpmock
 .rspec_status
 .DS_Store
 Gemfile.lock
