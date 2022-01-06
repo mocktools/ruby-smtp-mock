@@ -20,6 +20,7 @@ RSpec.configure do |config|
   config.order = :random
 
   config.include SmtpMock::ContextGeneratorHelper
+  config.include SmtpMock::ServerHelper
 
   ::Kernel.srand(config.seed)
 end

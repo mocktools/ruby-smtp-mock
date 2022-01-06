@@ -54,4 +54,39 @@ RSpec.describe SmtpMock::Dependency do
       it { is_expected.to be(false) }
     end
   end
+
+  describe '.verify_dependencies' do
+    subject(:verify_dependencies) { described_class.verify_dependencies }
+
+    context 'when smtpmock not installed' do
+      it do
+        expect(described_class).to receive(:smtpmock?).and_return(false)
+        expect { verify_dependencies }
+          .to raise_error(
+            SmtpMock::Error::Dependency,
+            SmtpMock::Error::Dependency::SMTPMOCK_NOT_INSTALLED
+          )
+      end
+    end
+
+    context 'when smtpmock installed, lsof not installed' do
+      it do
+        expect(described_class).to receive(:smtpmock?).and_return(true)
+        expect(described_class).to receive(:lsof?).and_return(false)
+        expect { verify_dependencies }
+          .to raise_error(
+            SmtpMock::Error::Dependency,
+            SmtpMock::Error::Dependency::LSOF_NOT_INSTALLED
+          )
+      end
+    end
+
+    context 'when both smtpmock and lsof were installed' do
+      it 'not raises SmtpMock::Error::Dependency' do
+        expect(described_class).to receive(:smtpmock?).and_return(true)
+        expect(described_class).to receive(:lsof?).and_return(true)
+        expect(verify_dependencies).to be_nil
+      end
+    end
+  end
 end
