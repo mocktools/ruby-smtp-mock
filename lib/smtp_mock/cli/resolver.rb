@@ -5,9 +5,8 @@ module SmtpMock
     module Resolver
       require 'optparse'
 
-      USE_CASE = 'Usage: smtp_mock [options], example: `smtp_mock -s -i ~/existent_dir`'
+      USE_CASE = 'Usage: smtp_mock [options], example: `bundle exec smtp_mock -s -i ~/existent_dir`'
       DOWNLOAD_SCRIPT = 'https://raw.githubusercontent.com/mocktools/go-smtp-mock/master/script/download.sh'
-      SYMLINK = '/usr/local/bin/smtpmock'
 
       def resolve(command_line_args) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
         opt_parser = ::OptionParser.new do |parser|
@@ -22,16 +21,16 @@ module SmtpMock
             return self.message = 'smtpmock is already installed' if ::File.exist?(binary_path)
 
             ::Kernel.system("cd #{install_path} && curl -sL #{SmtpMock::Cli::Resolver::DOWNLOAD_SCRIPT} | bash")
-            ::Kernel.system("#{as_sudo}ln -s #{binary_path} #{SmtpMock::Cli::Resolver::SYMLINK}")
+            ::Kernel.system("#{as_sudo}ln -s #{binary_path} #{SmtpMock::Dependency::SYMLINK}")
 
             self.message = 'smtpmock was installed successfully'
           end
 
           parser.on('-u', '--uninstall', 'Uninstall smtpmock') do
-            current_smtpmock_path = ::Kernel.public_send(:`, "readlink #{SmtpMock::Cli::Resolver::SYMLINK}")
+            current_smtpmock_path = SmtpMock::Dependency.smtpmock_path_by_symlink
             return self.message = 'smtpmock not installed yet' if current_smtpmock_path.empty?
 
-            ::Kernel.system("#{as_sudo}unlink #{SmtpMock::Cli::Resolver::SYMLINK}")
+            ::Kernel.system("#{as_sudo}unlink #{SmtpMock::Dependency::SYMLINK}")
             ::Kernel.system("rm #{current_smtpmock_path}")
 
             self.message = 'smtpmock was uninstalled successfully'
