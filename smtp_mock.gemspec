@@ -27,9 +27,9 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 2.5.0'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = 'exe'
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| ::File.basename(f) }
-  spec.require_paths = ['lib']
+  spec.executables   = %w[smtp_mock]
+  spec.require_paths = %w[lib]
+  spec.post_install_message = 'lsof, smtpmock are required system dependencies. More details: `bundle exec smtp_mock -h`'
 
   spec.add_runtime_dependency 'dry-struct', '~> 1.4'
 

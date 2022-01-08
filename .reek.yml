@@ -9,7 +9,8 @@ detectors:
   NestedIterators:
     exclude:
       - SmtpMock::CommandLineArgsBuilder#define_attribute
+      - SmtpMock::Cli::Resolver#resolve
 
-  TooManyConstants:
+  TooManyStatements:
     exclude:
-      - SmtpMock
+      - SmtpMock::Cli::Resolver#resolve
