@@ -21,4 +21,18 @@ RSpec.describe SmtpMock::ContextGeneratorHelper, type: :helper do # rubocop:disa
       expect(random_email).to match(/.+@.+/)
     end
   end
+
+  describe '#random_pid' do
+    it 'returns random pid' do
+      expect(::Random).to receive(:rand).with(1_000..2_000).and_call_original
+      expect(random_pid).to be_an_instance_of(::Integer)
+    end
+  end
+
+  describe '#random_port' do
+    it 'returns random port' do
+      expect(::Random).to receive(:rand).with(49_152..65_535).and_call_original
+      expect(random_port).to be_an_instance_of(::Integer)
+    end
+  end
 end

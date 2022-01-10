@@ -44,7 +44,7 @@ module SmtpMock
           end
         end
 
-        opt_parser.parse(command_line_args)
+        opt_parser.parse(command_line_args) # TODO: add error handler
       end
 
       private

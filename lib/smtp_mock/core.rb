@@ -16,4 +16,5 @@ module SmtpMock
   require_relative '../smtp_mock/command_line_args_builder'
   require_relative '../smtp_mock/cli/resolver'
   require_relative '../smtp_mock/cli'
+  require_relative '../smtp_mock/server'
 end

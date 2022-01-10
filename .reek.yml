@@ -5,6 +5,7 @@ detectors:
   UtilityFunction:
     exclude:
       - SmtpMock::CommandLineArgsBuilder#to_camel_case
+      - SmtpMock::ContextGeneratorHelper
 
   NestedIterators:
     exclude:
@@ -14,3 +15,8 @@ detectors:
   TooManyStatements:
     exclude:
       - SmtpMock::Cli::Resolver#resolve
+      - SmtpMock::Server#run
+
+  MissingSafeMethod:
+    exclude:
+      - SmtpMock::Server
