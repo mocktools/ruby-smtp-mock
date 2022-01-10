@@ -47,7 +47,6 @@ RSpec.describe SmtpMock::Cli::Command do
   describe 'defined constants' do
     it { expect(described_class).to be_const_defined(:USE_CASE) }
     it { expect(described_class).to be_const_defined(:DOWNLOAD_SCRIPT) }
-    it { expect(described_class).to be_const_defined(:SYMLINK) }
   end
 
   it 'have specified attr accesptors' do
@@ -84,7 +83,7 @@ RSpec.describe SmtpMock::Cli::Command do
           it 'installes binary file and addes symlink' do
             expect(::File).to receive(:exist?).with('some_path/smtpmock').and_return(false)
             expect(::Kernel).to receive(:system).with("cd some_path && curl -sL #{SmtpMock::Cli::Resolver::DOWNLOAD_SCRIPT} | bash")
-            expect(::Kernel).to receive(:system).with("ln -s some_path/smtpmock #{SmtpMock::Cli::Resolver::SYMLINK}")
+            expect(::Kernel).to receive(:system).with("ln -s some_path/smtpmock #{SmtpMock::Dependency::SYMLINK}")
             expect { resolve }
               .to change(command_instance, :install_path)
               .from(nil).to('some_path')
@@ -116,7 +115,7 @@ RSpec.describe SmtpMock::Cli::Command do
           it 'installes binary file and addes symlink' do
             expect(::File).to receive(:exist?).with('some_path/smtpmock').and_return(false)
             expect(::Kernel).to receive(:system).with("cd some_path && curl -sL #{SmtpMock::Cli::Resolver::DOWNLOAD_SCRIPT} | bash")
-            expect(::Kernel).to receive(:system).with("sudo ln -s some_path/smtpmock #{SmtpMock::Cli::Resolver::SYMLINK}")
+            expect(::Kernel).to receive(:system).with("sudo ln -s some_path/smtpmock #{SmtpMock::Dependency::SYMLINK}")
             expect { resolve }
               .to change(command_instance, :sudo)
               .from(nil).to(true)
@@ -133,13 +132,13 @@ RSpec.describe SmtpMock::Cli::Command do
       %w[-u --uninstall].each do |key|
         let(:command_line_args) { [key] }
 
-        before { stub_const('SmtpMock::Cli::Resolver::SYMLINK', symlink) }
+        before { stub_const('SmtpMock::Dependency::SYMLINK', symlink) }
 
         context 'when non-existent symlink' do
           let(:symlink) { '/usr/local/bin/non-existent-smtpmock' }
 
           it 'not removes symlink and binary file' do
-            expect(::Kernel).to receive(:`).with("readlink #{SmtpMock::Cli::Resolver::SYMLINK}").and_return('')
+            expect(SmtpMock::Dependency).to receive(:smtpmock_path_by_symlink).and_return('')
             expect { resolve }.to change(command_instance, :message).from(nil).to('smtpmock not installed yet')
           end
         end
@@ -149,8 +148,8 @@ RSpec.describe SmtpMock::Cli::Command do
           let(:binary_path) { '/some_ninary_path' }
 
           it 'removes symlink and binary file' do
-            expect(::Kernel).to receive(:`).with("readlink #{SmtpMock::Cli::Resolver::SYMLINK}").and_return(binary_path)
-            expect(::Kernel).to receive(:system).with("unlink #{SmtpMock::Cli::Resolver::SYMLINK}")
+            expect(SmtpMock::Dependency).to receive(:smtpmock_path_by_symlink).and_return(binary_path)
+            expect(::Kernel).to receive(:system).with("unlink #{SmtpMock::Dependency::SYMLINK}")
             expect(::Kernel).to receive(:system).with("rm #{binary_path}")
             expect { resolve }.to change(command_instance, :message).from(nil).to('smtpmock was uninstalled successfully')
           end
@@ -162,13 +161,13 @@ RSpec.describe SmtpMock::Cli::Command do
       [%w[-s -u], %w[--sudo --uninstall]].each do |keys|
         let(:command_line_args) { keys }
 
-        before { stub_const('SmtpMock::Cli::Resolver::SYMLINK', symlink) }
+        before { stub_const('SmtpMock::Dependency::SYMLINK', symlink) }
 
         context 'when non-existent symlink' do
           let(:symlink) { '/usr/local/bin/non-existent-smtpmock' }
 
           it 'not removes symlink and binary file' do
-            expect(::Kernel).to receive(:`).with("readlink #{SmtpMock::Cli::Resolver::SYMLINK}").and_return('')
+            expect(SmtpMock::Dependency).to receive(:smtpmock_path_by_symlink).and_return('')
             expect { resolve }
               .to change(command_instance, :sudo)
               .from(nil).to(true)
@@ -182,8 +181,8 @@ RSpec.describe SmtpMock::Cli::Command do
           let(:binary_path) { '/some_ninary_path' }
 
           it 'removes symlink and binary file' do
-            expect(::Kernel).to receive(:`).with("readlink #{SmtpMock::Cli::Resolver::SYMLINK}").and_return(binary_path)
-            expect(::Kernel).to receive(:system).with("sudo unlink #{SmtpMock::Cli::Resolver::SYMLINK}")
+            expect(SmtpMock::Dependency).to receive(:smtpmock_path_by_symlink).and_return(binary_path)
+            expect(::Kernel).to receive(:system).with("sudo unlink #{SmtpMock::Dependency::SYMLINK}")
             expect(::Kernel).to receive(:system).with("rm #{binary_path}")
             expect { resolve }
               .to change(command_instance, :sudo)
