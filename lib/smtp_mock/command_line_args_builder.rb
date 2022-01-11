@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module SmtpMock
+  require 'dry/struct'
+
+  Types = ::Class.new { include Dry.Types }
+
   class CommandLineArgsBuilder < Dry::Struct
     IP_ADDRESS_PATTERN = /\A((1\d|[1-9]|2[0-4])?\d|25[0-5])(\.\g<1>){3}\z/.freeze
     PERMITTED_ATTRS = {

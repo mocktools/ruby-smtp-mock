@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry/struct'
-
 module SmtpMock
-  Types = ::Class.new { include Dry.Types }
-
   module Error
     require_relative '../smtp_mock/error/argument'
     require_relative '../smtp_mock/error/dependency'
