@@ -28,9 +28,9 @@ RSpec.describe SmtpMock::Server do
         let(:args) { { port: port } }
 
         it 'creates and runs server instance, gets port from args' do
-          expect(::Kernel).to receive(:exec).with("smtpmock #{converted_command_line_args}").and_return(exec_result)
+          expect(::Kernel).to receive(:exec).with(compose_command(converted_command_line_args)).and_return(exec_result)
           expect(::Kernel).to receive(:fork) { |&block| expect(block.call).to eq(exec_result) }.and_return(pid)
-          expect(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).and_return('some active port')
+          expect(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).and_return(lsof_port_by_pid_result)
           expect(::ObjectSpace).to receive(:define_finalizer).and_call_original
           expect(server_instance.pid).to eq(pid)
           expect(server_instance.port).to eq(port)
@@ -42,9 +42,9 @@ RSpec.describe SmtpMock::Server do
         let(:args) { {} }
 
         it 'creates and runs server instance, gets port from pid' do
-          expect(::Kernel).to receive(:exec).with("smtpmock #{converted_command_line_args}").and_return(exec_result)
+          expect(::Kernel).to receive(:exec).with(compose_command(converted_command_line_args)).and_return(exec_result)
           expect(::Kernel).to receive(:fork) { |&block| expect(block.call).to eq(exec_result) }.and_return(pid)
-          expect(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).twice.and_return(":#{port} (LISTEN)")
+          expect(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).twice.and_return(lsof_port_by_pid_result(port))
           expect(::ObjectSpace).to receive(:define_finalizer).and_call_original
           expect(server_instance.pid).to eq(pid)
           expect(server_instance.port).to eq(port)
@@ -96,7 +96,7 @@ RSpec.describe SmtpMock::Server do
         it do
           expect(SmtpMock::Dependency).to receive(:verify_dependencies)
           expect(SmtpMock::CommandLineArgsBuilder).to receive(:call).and_return(converted_command_line_args)
-          expect(::Kernel).to receive(:exec).with("smtpmock #{converted_command_line_args}").and_return(exec_result)
+          expect(::Kernel).to receive(:exec).with(compose_command(converted_command_line_args)).and_return(exec_result)
           expect(::Kernel).to receive(:fork) { |&block| expect(block.call).to eq(exec_result) }.and_return(pid)
           expect(::Kernel).to receive(:sleep).with(SmtpMock::Server::WARMUP_DELAY)
           expect(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).and_return('')
@@ -114,21 +114,21 @@ RSpec.describe SmtpMock::Server do
     before do
       allow(SmtpMock::Dependency).to receive(:verify_dependencies)
       allow(SmtpMock::CommandLineArgsBuilder).to receive(:call).with(port: port).and_return(converted_command_line_args)
-      allow(::Kernel).to receive(:exec).with("smtpmock #{converted_command_line_args}").and_return(exec_result)
+      allow(::Kernel).to receive(:exec).with(compose_command(converted_command_line_args)).and_return(exec_result)
       allow(::Kernel).to receive(:fork).and_yield.and_return(pid)
       allow(::Kernel).to receive(:sleep).with(SmtpMock::Server::WARMUP_DELAY)
     end
 
     context 'when server is active' do
       it do
-        expect(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).twice.and_return('some active port')
+        expect(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).twice.and_return(lsof_port_by_pid_result)
         expect(server_instance.active?).to be(true)
       end
     end
 
     context 'when server is inactive' do
       it do
-        expect(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).and_return('some active port')
+        expect(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).and_return(lsof_port_by_pid_result)
         server_instance
         expect(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).and_return('')
         expect(server_instance.active?).to be(false)
@@ -144,10 +144,10 @@ RSpec.describe SmtpMock::Server do
     before do
       allow(SmtpMock::Dependency).to receive(:verify_dependencies)
       allow(SmtpMock::CommandLineArgsBuilder).to receive(:call).with(port: port).and_return(converted_command_line_args)
-      allow(::Kernel).to receive(:exec).with("smtpmock #{converted_command_line_args}").and_return(exec_result)
+      allow(::Kernel).to receive(:exec).with(compose_command(converted_command_line_args)).and_return(exec_result)
       allow(::Kernel).to receive(:fork).and_yield.and_return(pid)
       allow(::Kernel).to receive(:sleep).with(SmtpMock::Server::WARMUP_DELAY)
-      allow(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).and_return('some active port')
+      allow(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).and_return(lsof_port_by_pid_result)
     end
 
     context 'when existent pid' do
@@ -179,10 +179,10 @@ RSpec.describe SmtpMock::Server do
     before do
       allow(SmtpMock::Dependency).to receive(:verify_dependencies)
       allow(SmtpMock::CommandLineArgsBuilder).to receive(:call).with(port: port).and_return(converted_command_line_args)
-      allow(::Kernel).to receive(:exec).with("smtpmock #{converted_command_line_args}").and_return(exec_result)
+      allow(::Kernel).to receive(:exec).with(compose_command(converted_command_line_args)).and_return(exec_result)
       allow(::Kernel).to receive(:fork).and_yield.and_return(pid)
       allow(::Kernel).to receive(:sleep).with(SmtpMock::Server::WARMUP_DELAY)
-      allow(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).and_return('some active port')
+      allow(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).and_return(lsof_port_by_pid_result)
     end
 
     context 'when existent pid' do

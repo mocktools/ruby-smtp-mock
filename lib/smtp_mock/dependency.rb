@@ -2,7 +2,8 @@
 
 module SmtpMock
   module Dependency
-    SYMLINK = '/usr/local/bin/smtpmock'
+    BINARY_SHORTCUT = 'smtpmock'
+    SYMLINK = "/usr/local/bin/#{BINARY_SHORTCUT}"
 
     class << self
       def smtpmock_path_by_symlink
@@ -20,6 +21,10 @@ module SmtpMock
       def verify_dependencies
         raise SmtpMock::Error::Dependency, SmtpMock::Error::Dependency::SMTPMOCK_NOT_INSTALLED unless smtpmock?
         raise SmtpMock::Error::Dependency, SmtpMock::Error::Dependency::LSOF_NOT_INSTALLED unless lsof?
+      end
+
+      def compose_command(command_line_args)
+        "#{SmtpMock::Dependency::BINARY_SHORTCUT} #{command_line_args}".strip
       end
     end
   end

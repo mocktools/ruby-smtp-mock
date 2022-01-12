@@ -2,6 +2,7 @@
 
 RSpec.describe SmtpMock::Dependency do
   describe 'defined constants' do
+    it { expect(described_class).to be_const_defined(:BINARY_SHORTCUT) }
     it { expect(described_class).to be_const_defined(:SYMLINK) }
   end
 
@@ -87,6 +88,22 @@ RSpec.describe SmtpMock::Dependency do
         expect(described_class).to receive(:lsof?).and_return(true)
         expect(verify_dependencies).to be_nil
       end
+    end
+  end
+
+  describe '.compose_command' do
+    subject(:compose_command) { described_class.compose_command(command_line_args) }
+
+    context 'when command line args are not empty' do
+      let(:command_line_args) { '-x -y -z 42' }
+
+      it { is_expected.to eq("#{SmtpMock::Dependency::BINARY_SHORTCUT} #{command_line_args}") }
+    end
+
+    context 'when command line args is empty' do
+      let(:command_line_args) { '' }
+
+      it { is_expected.to eq(SmtpMock::Dependency::BINARY_SHORTCUT) }
     end
   end
 end
