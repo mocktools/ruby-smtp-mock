@@ -5,16 +5,29 @@ module SmtpMock
     WARMUP_DELAY = 0.5
     LSOF_USED_PORT_PATTERN = /:(\d+) \(LISTEN\)/.freeze
 
+    class Process
+      SIGKILL = 9
+      SIGTERM = 15
+
+      def self.kill(signal_number, pid)
+        !!::Process.kill(signal_number, pid)
+      rescue ::Errno::ESRCH
+        false
+      end
+    end
+
     attr_reader :pid, :port
 
     def initialize(
       deps_checker = SmtpMock::Dependency,
       args_builder = SmtpMock::CommandLineArgsBuilder,
+      process = SmtpMock::Server::Process,
       **args
     )
       deps_checker.verify_dependencies
       @command_line_args = args_builder.call(**args)
       @port = args[:port]
+      @process = process
       run
     end
 
@@ -22,16 +35,22 @@ module SmtpMock
       !lsof.empty?
     end
 
+    def stop
+      process_kill(SmtpMock::Server::Process::SIGTERM)
+    end
+
     def stop!
-      ::Process.kill(9, pid)
-    rescue ::Errno::ESRCH
-      nil
+      process_kill(SmtpMock::Server::Process::SIGKILL)
     end
 
     private
 
-    attr_reader :command_line_args
+    attr_reader :command_line_args, :process
     attr_writer :pid, :port
+
+    def process_kill(signal_number)
+      process.kill(signal_number, pid)
+    end
 
     def lsof
       ::Kernel.public_send(:`, "lsof -aPi -p #{pid}")

@@ -15,17 +15,25 @@ module SmtpMock
     end
 
     def random_pid
-      ::Random.rand(1_000..2_000)
+      random.rand(1_000..2_000)
     end
 
     def random_port
-      ::Random.rand(49_152..65_535)
+      random.rand(49_152..65_535)
+    end
+
+    def random_signal
+      random.rand(1..39)
     end
 
     private
 
     def ffaker
       FFaker::Internet
+    end
+
+    def random
+      ::Random
     end
   end
 end

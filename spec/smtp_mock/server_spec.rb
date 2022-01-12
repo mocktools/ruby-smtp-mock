@@ -136,6 +136,41 @@ RSpec.describe SmtpMock::Server do
     end
   end
 
+  describe '#stop' do
+    subject(:server_instance) { described_class.new(port: port) }
+
+    let(:port) { random_port }
+
+    before do
+      allow(SmtpMock::Dependency).to receive(:verify_dependencies)
+      allow(SmtpMock::CommandLineArgsBuilder).to receive(:call).with(port: port).and_return(converted_command_line_args)
+      allow(::Kernel).to receive(:exec).with("smtpmock #{converted_command_line_args}").and_return(exec_result)
+      allow(::Kernel).to receive(:fork).and_yield.and_return(pid)
+      allow(::Kernel).to receive(:sleep).with(SmtpMock::Server::WARMUP_DELAY)
+      allow(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).and_return('some active port')
+    end
+
+    context 'when existent pid' do
+      it 'stops current server by pid' do
+        expect(SmtpMock::Server::Process)
+          .to receive(:kill)
+          .with(SmtpMock::Server::Process::SIGTERM, pid)
+          .and_return(true)
+        expect(server_instance.stop).to be(true)
+      end
+    end
+
+    context 'when non-existent pid' do
+      it 'stops current server by pid' do
+        expect(SmtpMock::Server::Process)
+          .to receive(:kill)
+          .with(SmtpMock::Server::Process::SIGTERM, pid)
+          .and_return(false)
+        expect(server_instance.stop).to be(false)
+      end
+    end
+  end
+
   describe '#stop!' do
     subject(:server_instance) { described_class.new(port: port) }
 
@@ -152,16 +187,48 @@ RSpec.describe SmtpMock::Server do
 
     context 'when existent pid' do
       it 'stops current server by pid' do
-        expect(::Process).to receive(:kill).with(9, pid)
-        server_instance.stop!
+        expect(SmtpMock::Server::Process)
+          .to receive(:kill)
+          .with(SmtpMock::Server::Process::SIGKILL, pid)
+          .and_return(true)
+        expect(server_instance.stop!).to be(true)
       end
     end
 
     context 'when non-existent pid' do
       it 'stops current server by pid' do
-        expect(::Process).to receive(:kill).with(9, pid).and_raise(::Errno::ESRCH)
-        expect(server_instance.stop!).to be_nil
+        expect(SmtpMock::Server::Process)
+          .to receive(:kill)
+          .with(SmtpMock::Server::Process::SIGKILL, pid)
+          .and_return(false)
+        expect(server_instance.stop!).to be(false)
       end
+    end
+  end
+end
+
+RSpec.describe SmtpMock::Server::Process do
+  subject(:process) { described_class.kill(signal_number, pid) }
+
+  let(:signal_number) { random_signal }
+  let(:pid) { random_pid }
+
+  describe 'defined constants' do
+    it { expect(described_class).to be_const_defined(:SIGKILL) }
+    it { expect(described_class).to be_const_defined(:SIGTERM) }
+  end
+
+  context 'when existent pid' do
+    it do
+      expect(::Process).to receive(:kill).with(signal_number, pid).and_return(1)
+      expect(process).to be(true)
+    end
+  end
+
+  context 'when non-existent pid' do
+    it do
+      expect(::Process).to receive(:kill).with(signal_number, pid).and_raise(::Errno::ESRCH)
+      expect(process).to be(false)
     end
   end
 end
