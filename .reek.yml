@@ -5,7 +5,7 @@ detectors:
   UtilityFunction:
     exclude:
       - SmtpMock::CommandLineArgsBuilder#to_camel_case
-      - SmtpMock::ContextGeneratorHelper
+      - SmtpMock::ServerHelper#compose_command
 
   NestedIterators:
     exclude:
@@ -16,3 +16,7 @@ detectors:
     exclude:
       - SmtpMock::Cli::Resolver#resolve
       - SmtpMock::Server#run
+
+  ControlParameter:
+    exclude:
+      - SmtpMock::ServerHelper#lsof_port_by_pid_result

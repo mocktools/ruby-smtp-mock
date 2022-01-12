@@ -19,15 +19,14 @@ module SmtpMock
     attr_reader :pid, :port
 
     def initialize(
-      deps_checker = SmtpMock::Dependency,
+      deps_handler = SmtpMock::Dependency,
       args_builder = SmtpMock::CommandLineArgsBuilder,
       process = SmtpMock::Server::Process,
       **args
     )
-      deps_checker.verify_dependencies
-      @command_line_args = args_builder.call(**args)
-      @port = args[:port]
-      @process = process
+      deps_handler.verify_dependencies
+      @command_line_args, @port = args_builder.call(**args), args[:port]
+      @deps_handler, @process = deps_handler, process
       run
     end
 
@@ -45,11 +44,15 @@ module SmtpMock
 
     private
 
-    attr_reader :command_line_args, :process
+    attr_reader :deps_handler, :command_line_args, :process
     attr_writer :pid, :port
 
     def process_kill(signal_number)
       process.kill(signal_number, pid)
+    end
+
+    def compose_command
+      deps_handler.compose_command(command_line_args)
     end
 
     def lsof
@@ -57,7 +60,7 @@ module SmtpMock
     end
 
     def run
-      self.pid = ::Kernel.fork { ::Kernel.exec("smtpmock #{command_line_args}") }
+      self.pid = ::Kernel.fork { ::Kernel.exec(compose_command) }
       ::Kernel.sleep(SmtpMock::Server::WARMUP_DELAY)
       raise SmtpMock::Error::Server unless active?
       ::ObjectSpace.define_finalizer(self, proc { stop! })
