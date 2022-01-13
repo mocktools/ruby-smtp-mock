@@ -31,6 +31,7 @@ module SmtpMock
     end
 
     def active?
+      return false unless process
       !lsof.empty?
     end
 

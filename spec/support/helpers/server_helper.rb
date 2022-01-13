@@ -2,16 +2,13 @@
 
 module SmtpMock
   module ServerHelper
-    def cmd_lsof_port_by_pid(pid)
-      "lsof -aPi -p #{pid}"
+    def start_random_server(total: 1)
+      servers = ::Array.new(total) { SmtpMock.start_server }
+      total.eql?(1) ? servers.first : servers
     end
 
-    def lsof_port_by_pid_result(port = nil)
-      ":#{port || random_port} (LISTEN)"
-    end
-
-    def compose_command(command_line_args)
-      SmtpMock::Dependency.compose_command(command_line_args)
+    def stop_all_running_servers
+      SmtpMock.stop_running_servers!
     end
   end
 end

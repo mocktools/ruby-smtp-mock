@@ -1,32 +1,30 @@
 # frozen_string_literal: true
 
 RSpec.describe SmtpMock::ServerHelper, type: :helper do # rubocop:disable RSpec/FilePath
-  describe '#cmd_lsof_port_by_pid' do
-    let(:pid) { random_pid }
+  describe '#start_random_server' do
+    let(:server_instance) { instance_double('SmtpMockServer') }
 
-    it 'returns builded lsof command' do
-      expect(cmd_lsof_port_by_pid(pid)).to eq("lsof -aPi -p #{pid}")
+    context 'without total option' do
+      it 'returns random running smtp mock server' do
+        expect(SmtpMock).to receive(:start_server).and_return(server_instance)
+        expect(start_random_server).to eq(server_instance)
+      end
+    end
+
+    context 'with total option' do
+      let(:total) { ::Random.rand(2..10) }
+
+      it 'returns array with predefined count of smtp server instances' do
+        expect(SmtpMock).to receive(:start_server).at_least(total).and_return(server_instance)
+        expect(start_random_server(total: total)).to eq(::Array.new(total) { server_instance })
+      end
     end
   end
 
-  describe '#lsof_port_by_pid_result' do
-    context 'when port not specified' do
-      it { expect(lsof_port_by_pid_result).to match(SmtpMock::Server::LSOF_USED_PORT_PATTERN) }
-    end
-
-    context 'when port specified' do
-      let(:port) { random_port }
-
-      it { expect(lsof_port_by_pid_result(port)).to eq(":#{port} (LISTEN)") }
-    end
-  end
-
-  describe '#compose_command' do
-    let(:command_line_args) { '-a -b 42' }
-
-    it 'returns composed command' do
-      expect(SmtpMock::Dependency).to receive(:compose_command).with(command_line_args).and_call_original
-      compose_command(command_line_args)
+  describe '#stop_all_running_servers' do
+    it 'kills all running smtp mock servers' do
+      expect(SmtpMock).to receive(:stop_running_servers!)
+      stop_all_running_servers
     end
   end
 end
