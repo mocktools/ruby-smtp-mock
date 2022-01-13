@@ -119,6 +119,14 @@ RSpec.describe SmtpMock::Server do
       allow(::Kernel).to receive(:sleep).with(SmtpMock::Server::WARMUP_DELAY)
     end
 
+    context 'when server not fully initialized yet' do
+      it do
+        expect(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).and_return(lsof_port_by_pid_result)
+        server_instance.instance_variable_set(:@process, nil)
+        expect(server_instance.active?).to be(false)
+      end
+    end
+
     context 'when server is active' do
       it do
         expect(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).twice.and_return(lsof_port_by_pid_result)
