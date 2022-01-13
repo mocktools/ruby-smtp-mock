@@ -7,6 +7,7 @@ detectors:
       - SmtpMock::CommandLineArgsBuilder#to_camel_case
       - SmtpMock::DependencyHelper#compose_command
       - SmtpMock::ServerHelper
+      - SmtpMock::TestFramework::RSpec::Helper#smtp_mock_server
 
   NestedIterators:
     exclude:
