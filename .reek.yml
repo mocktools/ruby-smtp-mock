@@ -8,6 +8,7 @@ detectors:
       - SmtpMock::DependencyHelper#compose_command
       - SmtpMock::ServerHelper
       - SmtpMock::TestFramework::RSpec::Helper#smtp_mock_server
+      - SmtpMock::ContextGeneratorHelper#random_message
 
   NestedIterators:
     exclude:
@@ -22,3 +23,7 @@ detectors:
   ControlParameter:
     exclude:
       - SmtpMock::DependencyHelper#lsof_port_by_pid_result
+
+  LongParameterList:
+    exclude:
+      - SmtpMock::ClientHelper#smtp_request

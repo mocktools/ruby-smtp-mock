@@ -15,7 +15,7 @@ RSpec.describe SmtpMock::DependencyHelper, type: :helper do # rubocop:disable RS
     end
 
     context 'when port specified' do
-      let(:port) { random_port }
+      let(:port) { random_port_number }
 
       it { expect(lsof_port_by_pid_result(port)).to eq(":#{port} (LISTEN)") }
     end

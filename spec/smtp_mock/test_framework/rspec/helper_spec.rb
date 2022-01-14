@@ -16,7 +16,7 @@ RSpec.describe SmtpMock::TestFramework::RSpec::Helper do
       subject(:helper) { test_class_instance.smtp_mock_server(**options) }
 
       let(:host) { random_ip_v4_address }
-      let(:port) { random_port }
+      let(:port) { random_port_number }
       let(:options) { { host: host, port: port } }
 
       it do

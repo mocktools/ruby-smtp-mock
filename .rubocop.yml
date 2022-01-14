@@ -290,6 +290,9 @@ Gemspec/DateAssignment:
 Gemspec/RequireMFA:
   Enabled: false
 
+Gemspec/RubyVersionGlobalsUsage:
+  Enabled: false
+
 Security/IoMethods:
   Enabled: true
 
