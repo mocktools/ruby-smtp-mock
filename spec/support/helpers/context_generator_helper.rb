@@ -18,12 +18,16 @@ module SmtpMock
       random.rand(1_000..2_000)
     end
 
-    def random_port
+    def random_port_number
       random.rand(49_152..65_535)
     end
 
     def random_signal
       random.rand(1..39)
+    end
+
+    def random_message
+      FFaker::Lorem.sentence
     end
 
     private

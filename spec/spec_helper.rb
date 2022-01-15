@@ -22,6 +22,7 @@ RSpec.configure do |config|
   config.include SmtpMock::ContextGeneratorHelper
   config.include SmtpMock::DependencyHelper
   config.include SmtpMock::ServerHelper
+  config.include SmtpMock::ClientHelper
 
   ::Kernel.srand(config.seed)
 end

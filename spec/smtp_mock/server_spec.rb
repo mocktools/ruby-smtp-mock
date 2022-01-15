@@ -24,7 +24,7 @@ RSpec.describe SmtpMock::Server do
       end
 
       context 'when port passed' do
-        let(:port) { random_port }
+        let(:port) { random_port_number }
         let(:args) { { port: port } }
 
         it 'creates and runs server instance, gets port from args' do
@@ -38,7 +38,7 @@ RSpec.describe SmtpMock::Server do
       end
 
       context 'when port not passed' do
-        let(:port) { random_port }
+        let(:port) { random_port_number }
         let(:args) { {} }
 
         it 'creates and runs server instance, gets port from pid' do
@@ -109,7 +109,7 @@ RSpec.describe SmtpMock::Server do
   describe '#active?' do
     subject(:server_instance) { described_class.new(port: port) }
 
-    let(:port) { random_port }
+    let(:port) { random_port_number }
 
     before do
       allow(SmtpMock::Dependency).to receive(:verify_dependencies)
@@ -147,7 +147,7 @@ RSpec.describe SmtpMock::Server do
   describe '#stop' do
     subject(:server_instance) { described_class.new(port: port) }
 
-    let(:port) { random_port }
+    let(:port) { random_port_number }
 
     before do
       allow(SmtpMock::Dependency).to receive(:verify_dependencies)
@@ -156,6 +156,13 @@ RSpec.describe SmtpMock::Server do
       allow(::Kernel).to receive(:fork).and_yield.and_return(pid)
       allow(::Kernel).to receive(:sleep).with(SmtpMock::Server::WARMUP_DELAY)
       allow(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).and_return(lsof_port_by_pid_result)
+    end
+
+    context 'when server not fully initialized yet' do
+      it do
+        server_instance.instance_variable_set(:@process, nil)
+        expect(server_instance.active?).to be(false)
+      end
     end
 
     context 'when existent pid' do
@@ -182,7 +189,7 @@ RSpec.describe SmtpMock::Server do
   describe '#stop!' do
     subject(:server_instance) { described_class.new(port: port) }
 
-    let(:port) { random_port }
+    let(:port) { random_port_number }
 
     before do
       allow(SmtpMock::Dependency).to receive(:verify_dependencies)
@@ -191,6 +198,13 @@ RSpec.describe SmtpMock::Server do
       allow(::Kernel).to receive(:fork).and_yield.and_return(pid)
       allow(::Kernel).to receive(:sleep).with(SmtpMock::Server::WARMUP_DELAY)
       allow(::Kernel).to receive(:`).with(cmd_lsof_port_by_pid(pid)).and_return(lsof_port_by_pid_result)
+    end
+
+    context 'when server not fully initialized yet' do
+      it do
+        server_instance.instance_variable_set(:@process, nil)
+        expect(server_instance.active?).to be(false)
+      end
     end
 
     context 'when existent pid' do

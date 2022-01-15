@@ -29,10 +29,10 @@ RSpec.describe SmtpMock::ContextGeneratorHelper, type: :helper do # rubocop:disa
     end
   end
 
-  describe '#random_port' do
+  describe '#random_port_number' do
     it 'returns random port' do
       expect(::Random).to receive(:rand).with(49_152..65_535).and_call_original
-      expect(random_port).to be_an_instance_of(::Integer)
+      expect(random_port_number).to be_an_instance_of(::Integer)
     end
   end
 

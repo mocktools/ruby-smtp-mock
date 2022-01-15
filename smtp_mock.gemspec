@@ -36,6 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler-audit', '~> 0.9.0.1'
   spec.add_development_dependency 'fasterer', '~> 0.9.0'
   spec.add_development_dependency 'ffaker', '~> 2.20'
+  spec.add_development_dependency 'net-smtp', '~> 0.3' if ::RUBY_VERSION >= '3.1.0'
   spec.add_development_dependency 'overcommit', '~> 0.58.0'
   spec.add_development_dependency 'pry-byebug', '~> 3.9'
   spec.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'

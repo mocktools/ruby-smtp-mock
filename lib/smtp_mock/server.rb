@@ -49,6 +49,7 @@ module SmtpMock
     attr_writer :pid, :port
 
     def process_kill(signal_number)
+      return false unless process
       process.kill(signal_number, pid)
     end
 

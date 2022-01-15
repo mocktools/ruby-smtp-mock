@@ -7,7 +7,7 @@ module SmtpMock
     end
 
     def lsof_port_by_pid_result(port = nil)
-      ":#{port || random_port} (LISTEN)"
+      ":#{port || random_port_number} (LISTEN)"
     end
 
     def compose_command(command_line_args)
