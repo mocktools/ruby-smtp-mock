@@ -39,7 +39,7 @@ module SmtpMock
       SmtpMock::ClientHelper::SmtpClient.new(host, port).start(helo_domain) do |session|
         session.send_message(message, mailfrom, rcptto)
       rescue ::Net::SMTPFatalError => error
-        raise SmtpMock::ClientHelper::SmtpClient::Error, error.message
+        raise SmtpMock::ClientHelper::SmtpClient::Error, error.message.strip
       end
     end
   end

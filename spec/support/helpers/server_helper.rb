@@ -2,13 +2,15 @@
 
 module SmtpMock
   module ServerHelper
-    def start_random_server(total: 1)
-      servers = ::Array.new(total) { SmtpMock.start_server }
-      total.eql?(1) ? servers.first : servers
+    def create_fake_servers(active: 1, inactive: 1)
+      server = ::Struct.new(:active?, :stop!)
+      active_servers = ::Array.new(active) { server.new(true, true) }
+      inactive_servers = ::Array.new(inactive) { server.new }
+      (active_servers + inactive_servers).shuffle
     end
 
-    def stop_all_running_servers
-      SmtpMock.stop_running_servers!
+    def reset_err_log
+      SmtpMock::Server::Process.instance_variable_set(:@err_log, nil)
     end
   end
 end

@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.executables   = %w[smtp_mock]
   spec.require_paths = %w[lib]
-  spec.post_install_message = 'lsof, smtpmock are required system dependencies. More details: `bundle exec smtp_mock -h`'
+  spec.post_install_message = 'smtpmock is required system dependency. For more details run: `bundle exec smtp_mock -h`'
 
   spec.add_runtime_dependency 'dry-struct', '~> 1.4'
 

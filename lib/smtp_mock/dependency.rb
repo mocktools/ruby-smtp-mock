@@ -14,13 +14,8 @@ module SmtpMock
         !smtpmock_path_by_symlink.empty?
       end
 
-      def lsof?
-        !!::Kernel.system('lsof -v', %i[out err] => ::File::NULL)
-      end
-
       def verify_dependencies
         raise SmtpMock::Error::Dependency, SmtpMock::Error::Dependency::SMTPMOCK_NOT_INSTALLED unless smtpmock?
-        raise SmtpMock::Error::Dependency, SmtpMock::Error::Dependency::LSOF_NOT_INSTALLED unless lsof?
       end
 
       def compose_command(command_line_args)

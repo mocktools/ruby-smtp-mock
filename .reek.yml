@@ -19,10 +19,11 @@ detectors:
     exclude:
       - SmtpMock::Cli::Resolver#resolve
       - SmtpMock::Server#run
+      - SmtpMock::ServerHelper#create_fake_servers
 
-  ControlParameter:
+  TooManyInstanceVariables:
     exclude:
-      - SmtpMock::DependencyHelper#lsof_port_by_pid_result
+      - SmtpMock::Server
 
   LongParameterList:
     exclude:
