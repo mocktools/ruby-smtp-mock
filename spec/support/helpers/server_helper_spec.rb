@@ -1,30 +1,44 @@
 # frozen_string_literal: true
 
 RSpec.describe SmtpMock::ServerHelper, type: :helper do # rubocop:disable RSpec/FilePath
-  describe '#start_random_server' do
-    let(:server_instance) { instance_double('SmtpMockServer') }
+  describe '#create_fake_servers' do
+    subject(:fake_servers) { create_fake_servers(**options) }
 
-    context 'without total option' do
-      it 'returns random running smtp mock server' do
-        expect(SmtpMock).to receive(:start_server).and_return(server_instance)
-        expect(start_random_server).to eq(server_instance)
+    context 'when active 1, inactive 0' do
+      let(:options) { { inactive: 0 } }
+
+      it 'returns array with one active fake server' do
+        expect(fake_servers.size).to eq(1)
+        server = fake_servers.first
+        expect(server.active?).to be(true)
+        expect(server.stop!).to be(true)
       end
     end
 
-    context 'with total option' do
-      let(:total) { ::Random.rand(2..10) }
+    context 'when active 0, inactive 0' do
+      let(:options) { { active: 0, inactive: 0 } }
 
-      it 'returns array with predefined count of smtp server instances' do
-        expect(SmtpMock).to receive(:start_server).at_least(total).and_return(server_instance)
-        expect(start_random_server(total: total)).to eq(::Array.new(total) { server_instance })
+      it 'returns empty array' do
+        expect(fake_servers).to be_empty
+      end
+    end
+
+    context 'when active 0, inactive 1' do
+      let(:options) { { active: 0 } }
+
+      it 'returns array with one active fake server' do
+        expect(fake_servers.size).to eq(1)
+        server = fake_servers.first
+        expect(server.active?).to be_nil
+        expect(server.stop!).to be_nil
       end
     end
   end
 
-  describe '#stop_all_running_servers' do
-    it 'kills all running smtp mock servers' do
-      expect(SmtpMock).to receive(:stop_running_servers!)
-      stop_all_running_servers
+  describe '#reset_err_log' do
+    it 'resets err_log instance variable' do
+      expect(SmtpMock::Server::Process).to receive(:instance_variable_set).with(:@err_log, nil)
+      reset_err_log
     end
   end
 end

@@ -2,37 +2,24 @@
 
 module SmtpMock
   class Server
-    WARMUP_DELAY = 0.5
-    LSOF_USED_PORT_PATTERN = /:(\d+) \(LISTEN\)/.freeze
-
-    class Process
-      SIGKILL = 9
-      SIGTERM = 15
-
-      def self.kill(signal_number, pid)
-        !!::Process.kill(signal_number, pid)
-      rescue ::Errno::ESRCH
-        false
-      end
-    end
-
     attr_reader :pid, :port
 
-    def initialize(
+    def initialize( # rubocop:disable Metrics/ParameterLists
       deps_handler = SmtpMock::Dependency,
+      port_checker = SmtpMock::Server::Port,
       args_builder = SmtpMock::CommandLineArgsBuilder,
       process = SmtpMock::Server::Process,
       **args
     )
       deps_handler.verify_dependencies
+      args[:port] = port_checker.random_free_port unless args.include?(:port)
       @command_line_args, @port = args_builder.call(**args), args[:port]
-      @deps_handler, @process = deps_handler, process
+      @deps_handler, @port_checker, @process = deps_handler, port_checker, process
       run
     end
 
     def active?
-      return false unless process
-      !lsof.empty?
+      process_alive? && port_open?
     end
 
     def stop
@@ -45,11 +32,10 @@ module SmtpMock
 
     private
 
-    attr_reader :deps_handler, :command_line_args, :process
+    attr_reader :deps_handler, :command_line_args, :port_checker, :process
     attr_writer :pid, :port
 
     def process_kill(signal_number)
-      return false unless process
       process.kill(signal_number, pid)
     end
 
@@ -57,16 +43,17 @@ module SmtpMock
       deps_handler.compose_command(command_line_args)
     end
 
-    def lsof
-      ::Kernel.public_send(:`, "lsof -aPi -p #{pid}")
+    def process_alive?
+      process.alive?(pid)
+    end
+
+    def port_open?
+      port_checker.port_open?(port)
     end
 
     def run
-      self.pid = ::Kernel.fork { ::Kernel.exec(compose_command) }
-      ::Kernel.sleep(SmtpMock::Server::WARMUP_DELAY)
-      raise SmtpMock::Error::Server unless active?
-      ::ObjectSpace.define_finalizer(self, proc { stop! })
-      self.port ||= lsof[SmtpMock::Server::LSOF_USED_PORT_PATTERN, 1].to_i
+      self.pid = process.create(compose_command)
+      ::Kernel.at_exit { stop! }
     end
   end
 end
