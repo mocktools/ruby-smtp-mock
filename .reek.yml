@@ -1,0 +1,30 @@
+detectors:
+  IrresponsibleModule:
+    enabled: false
+
+  UtilityFunction:
+    exclude:
+      - SmtpMock::CommandLineArgsBuilder#to_camel_case
+      - SmtpMock::DependencyHelper#compose_command
+      - SmtpMock::ServerHelper
+      - SmtpMock::TestFramework::RSpec::Helper#smtp_mock_server
+      - SmtpMock::ContextGeneratorHelper#random_message
+
+  NestedIterators:
+    exclude:
+      - SmtpMock::CommandLineArgsBuilder#define_attribute
+      - SmtpMock::Cli::Resolver#resolve
+
+  TooManyStatements:
+    exclude:
+      - SmtpMock::Cli::Resolver#resolve
+      - SmtpMock::Server#run
+      - SmtpMock::ServerHelper#create_fake_servers
+
+  TooManyInstanceVariables:
+    exclude:
+      - SmtpMock::Server
+
+  LongParameterList:
+    exclude:
+      - SmtpMock::ClientHelper#smtp_request
