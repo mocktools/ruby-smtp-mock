@@ -3,7 +3,7 @@
 require_relative '../../../../lib/smtp_mock/test_framework/rspec/interface'
 
 RSpec.describe SmtpMock::TestFramework::RSpec::Interface do
-  after { described_class.clear_server! }
+  before { described_class.clear_server! }
 
   describe '.start_server' do
     let(:smtp_mock_server_instance) { instance_double('SmtpMockServerInstance') }
@@ -31,6 +31,25 @@ RSpec.describe SmtpMock::TestFramework::RSpec::Interface do
     end
   end
 
+  describe '.smtp_mock_server' do
+    subject(:smtp_mock_server) { described_class.smtp_mock_server }
+
+    let(:smtp_mock_server_instance) { instance_double('SmtpMockServerInstance', stop!: true) }
+
+    context 'when smtp mock server exists' do
+      before do
+        allow(SmtpMock).to receive(:start_server).and_return(smtp_mock_server_instance)
+        described_class.start_server
+      end
+
+      it { is_expected.to eq(smtp_mock_server_instance) }
+    end
+
+    context 'when smtp mock server not exists' do
+      it { is_expected.to be_nil }
+    end
+  end
+
   describe '.stop_server!' do
     subject(:stop_server) { described_class.stop_server! }
 
@@ -42,11 +61,19 @@ RSpec.describe SmtpMock::TestFramework::RSpec::Interface do
         described_class.start_server
       end
 
-      it { is_expected.to be(true) }
+      it do
+        expect(smtp_mock_server_instance).to receive(:stop!)
+        expect(described_class).to receive(:clear_server!)
+        expect(stop_server).to be(true)
+      end
     end
 
     context 'when smtp mock server not exists' do
-      it { is_expected.to be_nil }
+      it do
+        expect(smtp_mock_server_instance).not_to receive(:stop!)
+        expect(described_class).not_to receive(:clear_server!)
+        expect(stop_server).to be_nil
+      end
     end
   end
 
