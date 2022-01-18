@@ -1,7 +1,7 @@
 # ![Ruby SmtpMock - mimic any 📤 SMTP server behaviour for your test environment and even more!](https://repository-images.githubusercontent.com/443795043/81ce5b00-0915-4dd0-93ad-88e6699e18cd)
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/5ea9da61ef468b8ad4c4/maintainability)](https://codeclimate.com/github/mocktools/ruby-smtp-mock/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/5ea9da61ef468b8ad4c4/test_coverage)](https://codeclimate.com/github/mocktools/ruby-smtp-mock/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/315c5fff7449a11868dd/maintainability)](https://codeclimate.com/github/mocktools/ruby-smtp-mock/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/315c5fff7449a11868dd/test_coverage)](https://codeclimate.com/github/mocktools/ruby-smtp-mock/test_coverage)
 [![CircleCI](https://circleci.com/gh/mocktools/ruby-smtp-mock/tree/master.svg?style=svg)](https://circleci.com/gh/mocktools/ruby-smtp-mock/tree/master)
 [![Gem Version](https://badge.fury.io/rb/smtp_mock.svg)](https://badge.fury.io/rb/smtp_mock)
 [![Downloads](https://img.shields.io/gem/dt/smtp_mock.svg?colorA=004d99&colorB=0073e6)](https://rubygems.org/gems/smtp_mock)
