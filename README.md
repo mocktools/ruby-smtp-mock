@@ -1,4 +1,4 @@
-# ![Ruby SmtpMock - mimic any 📤 SMTP server behaviour for your test environment and even more!](https://repository-images.githubusercontent.com/443795043/81ce5b00-0915-4dd0-93ad-88e6699e18cd)
+# ![Ruby SmtpMock - mimic any 📤 SMTP server behaviour for your test environment with fake SMTP server](https://repository-images.githubusercontent.com/443795043/81ce5b00-0915-4dd0-93ad-88e6699e18cd)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/315c5fff7449a11868dd/maintainability)](https://codeclimate.com/github/mocktools/ruby-smtp-mock/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/315c5fff7449a11868dd/test_coverage)](https://codeclimate.com/github/mocktools/ruby-smtp-mock/test_coverage)
@@ -70,7 +70,7 @@ Then install [`smtpmock`](https://github.com/mocktools/go-smtp-mock) as system d
 
 ### Dependency manager
 
-This gem includes esasy system dependency manager. Run `bundle exec smtp_mock` with options for manage `smtpmock` system dependency.
+This gem includes easy system dependency manager. Run `bundle exec smtp_mock` with options for manage `smtpmock` system dependency.
 
 #### Available flags
 
