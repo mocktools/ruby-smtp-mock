@@ -60,7 +60,13 @@ RSpec.describe SmtpMock::Cli::Command do
       %w[-s --sudo].each do |key|
         let(:command_line_args) { [key] }
 
-        it { expect { resolve }.to change(command_instance, :sudo).from(nil).to(true) }
+        it do
+          expect { resolve }
+            .to change(command_instance, :sudo)
+            .from(nil).to(true)
+            .and change(command_instance, :success)
+            .from(nil).to(true)
+        end
       end
     end
 
@@ -76,6 +82,8 @@ RSpec.describe SmtpMock::Cli::Command do
               .from(nil).to('some_path')
               .and change(command_instance, :message)
               .from(nil).to('smtpmock is already installed')
+              .and change(command_instance, :success)
+              .from(nil).to(true)
           end
         end
 
@@ -89,6 +97,8 @@ RSpec.describe SmtpMock::Cli::Command do
               .from(nil).to('some_path')
               .and change(command_instance, :message)
               .from(nil).to('smtpmock was installed successfully')
+              .and change(command_instance, :success)
+              .from(nil).to(true)
           end
         end
       end
@@ -108,6 +118,8 @@ RSpec.describe SmtpMock::Cli::Command do
               .from(nil).to('some_path')
               .and change(command_instance, :message)
               .from(nil).to('smtpmock is already installed')
+              .and change(command_instance, :success)
+              .from(nil).to(true)
           end
         end
 
@@ -123,6 +135,8 @@ RSpec.describe SmtpMock::Cli::Command do
               .from(nil).to('some_path')
               .and change(command_instance, :message)
               .from(nil).to('smtpmock was installed successfully')
+              .and change(command_instance, :success)
+              .from(nil).to(true)
           end
         end
       end
@@ -139,7 +153,11 @@ RSpec.describe SmtpMock::Cli::Command do
 
           it 'not removes symlink and binary file' do
             expect(SmtpMock::Dependency).to receive(:smtpmock_path_by_symlink).and_return('')
-            expect { resolve }.to change(command_instance, :message).from(nil).to('smtpmock not installed yet')
+            expect { resolve }
+              .to change(command_instance, :message)
+              .from(nil).to('smtpmock not installed yet')
+              .and change(command_instance, :success)
+              .from(nil).to(true)
           end
         end
 
@@ -151,7 +169,11 @@ RSpec.describe SmtpMock::Cli::Command do
             expect(SmtpMock::Dependency).to receive(:smtpmock_path_by_symlink).and_return(binary_path)
             expect(::Kernel).to receive(:system).with("unlink #{SmtpMock::Dependency::SYMLINK}")
             expect(::Kernel).to receive(:system).with("rm #{binary_path}")
-            expect { resolve }.to change(command_instance, :message).from(nil).to('smtpmock was uninstalled successfully')
+            expect { resolve }
+              .to change(command_instance, :message)
+              .from(nil).to('smtpmock was uninstalled successfully')
+              .and change(command_instance, :success)
+              .from(nil).to(true)
           end
         end
       end
@@ -173,6 +195,8 @@ RSpec.describe SmtpMock::Cli::Command do
               .from(nil).to(true)
               .and change(command_instance, :message)
               .from(nil).to('smtpmock not installed yet')
+              .and change(command_instance, :success)
+              .from(nil).to(true)
           end
         end
 
@@ -189,6 +213,8 @@ RSpec.describe SmtpMock::Cli::Command do
               .from(nil).to(true)
               .and change(command_instance, :message)
               .from(nil).to('smtpmock was uninstalled successfully')
+              .and change(command_instance, :success)
+              .from(nil).to(true)
           end
         end
       end
@@ -207,9 +233,11 @@ RSpec.describe SmtpMock::Cli::Command do
         end
 
         it do
-          expect(::Kernel).to receive(:puts).with(expected_string)
-          expect(::Kernel).to receive(:exit)
-          resolve
+          expect { resolve }
+            .to change(command_instance, :message)
+            .from(nil).to(expected_string)
+            .and change(command_instance, :success)
+            .from(nil).to(true)
         end
       end
     end
