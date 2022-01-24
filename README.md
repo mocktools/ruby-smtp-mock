@@ -157,6 +157,7 @@ Require this either in your Gemfile or in RSpec's support scripts. So either:
 
 ```ruby
 # Gemfile
+
 group :test do
   gem 'rspec'
   gem 'smtp_mock', require: 'smtp_mock/test_framework/rspec'
@@ -167,6 +168,7 @@ or
 
 ```ruby
 # spec/support/config/smtp_mock.rb
+
 require 'smtp_mock/test_framework/rspec'
 ```
 
@@ -176,13 +178,14 @@ Just add `SmtpMock::TestFramework::RSpec::Helper` if you wanna use shortcut `smt
 
 ```ruby
 # spec/support/config/smtp_mock.rb
+
 RSpec.configure do |config|
   config.include SmtpMock::TestFramework::RSpec::Helper
 end
 ```
 
 ```ruby
-# your awesome first_a_record_spec.rb
+# your awesome smtp_client_spec.rb
 
 RSpec.describe SmtpClient do
   subject(:smtp_response) do
