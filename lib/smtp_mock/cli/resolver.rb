@@ -36,12 +36,11 @@ module SmtpMock
             self.message = 'smtpmock was uninstalled successfully'
           end
 
-          self.success = true
-
           parser.on('-h', '--help', 'Prints help') do
-            ::Kernel.puts(parser.to_s)
-            ::Kernel.exit
+            self.message = parser.to_s
           end
+
+          self.success = true
         end
 
         opt_parser.parse(command_line_args) # TODO: add error handler
