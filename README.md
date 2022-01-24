@@ -1,4 +1,4 @@
-# ![Ruby SmtpMock - mimic any 📤 SMTP server behaviour for your test environment and even more!](https://repository-images.githubusercontent.com/443795043/81ce5b00-0915-4dd0-93ad-88e6699e18cd)
+# ![Ruby SmtpMock - mimic any 📤 SMTP server behaviour for your test environment with fake SMTP server](https://repository-images.githubusercontent.com/443795043/81ce5b00-0915-4dd0-93ad-88e6699e18cd)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/315c5fff7449a11868dd/maintainability)](https://codeclimate.com/github/mocktools/ruby-smtp-mock/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/315c5fff7449a11868dd/test_coverage)](https://codeclimate.com/github/mocktools/ruby-smtp-mock/test_coverage)
@@ -70,7 +70,7 @@ Then install [`smtpmock`](https://github.com/mocktools/go-smtp-mock) as system d
 
 ### Dependency manager
 
-This gem includes esasy system dependency manager. Run `bundle exec smtp_mock` with options for manage `smtpmock` system dependency.
+This gem includes easy system dependency manager. Run `bundle exec smtp_mock` with options for manage `smtpmock` system dependency.
 
 #### Available flags
 
@@ -157,6 +157,7 @@ Require this either in your Gemfile or in RSpec's support scripts. So either:
 
 ```ruby
 # Gemfile
+
 group :test do
   gem 'rspec'
   gem 'smtp_mock', require: 'smtp_mock/test_framework/rspec'
@@ -167,6 +168,7 @@ or
 
 ```ruby
 # spec/support/config/smtp_mock.rb
+
 require 'smtp_mock/test_framework/rspec'
 ```
 
@@ -176,13 +178,14 @@ Just add `SmtpMock::TestFramework::RSpec::Helper` if you wanna use shortcut `smt
 
 ```ruby
 # spec/support/config/smtp_mock.rb
+
 RSpec.configure do |config|
   config.include SmtpMock::TestFramework::RSpec::Helper
 end
 ```
 
 ```ruby
-# your awesome first_a_record_spec.rb
+# your awesome smtp_client_spec.rb
 
 RSpec.describe SmtpClient do
   subject(:smtp_response) do
