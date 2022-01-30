@@ -2,6 +2,7 @@
 
 RSpec.describe SmtpMock do
   describe 'defined constants' do
+    it { expect(described_class).to be_const_defined(:SMTPMOCK_MIN_VERSION) }
     it { expect(described_class).to be_const_defined(:Types) }
   end
 

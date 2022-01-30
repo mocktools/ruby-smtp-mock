@@ -77,8 +77,9 @@ This gem includes easy system dependency manager. Run `bundle exec smtp_mock` wi
 | Flag | Description | Example of usage |
 | --- | --- | --- |
 | `-s`, `--sudo` | Run command as sudo | `bundle exec smtp_mock -s -i ~` |
-| `-i`, `--install=PATH` | Install smtpmock to the existing path | `bundle exec smtp_mock -i ~/existent_dir` |
-| `-u`, `--uninstall` | Uninstall smtpmock | `bundle exec smtp_mock -u` |
+| `-i`, `--install=PATH` | Install `smtpmock` to the existing path | `bundle exec smtp_mock -i ~/existent_dir` |
+| `-u`, `--uninstall` | Uninstall `smtpmock` | `bundle exec smtp_mock -u` |
+| `-g`, `--upgrade` | Upgrade to latest version of `smtpmock` | `bundle exec smtp_mock -g` |
 | `-h`, `--help` | Prints help | `bundle exec smtp_mock -h` |
 
 ### DSL
@@ -133,6 +134,9 @@ smtp_mock_server.port # => 55640
 
 # returns current smtp mock server port
 smtp_mock_server.pid # => 38195
+
+# returns current smtp mock server version
+smtp_mock_server.version # => '1.5.2'
 
 # interface for graceful shutdown current smtp mock server
 smtp_mock_server.stop # => true

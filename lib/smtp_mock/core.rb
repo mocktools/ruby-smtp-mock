@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module SmtpMock
+  SMTPMOCK_MIN_VERSION = '1.5.0'
+
   module Error
     require_relative '../smtp_mock/error/argument'
     require_relative '../smtp_mock/error/dependency'

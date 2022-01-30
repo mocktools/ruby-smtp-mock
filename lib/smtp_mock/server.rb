@@ -2,7 +2,7 @@
 
 module SmtpMock
   class Server
-    attr_reader :pid, :port
+    attr_reader :pid, :port, :version
 
     def initialize( # rubocop:disable Metrics/ParameterLists
       deps_handler = SmtpMock::Dependency,
@@ -11,7 +11,7 @@ module SmtpMock
       process = SmtpMock::Server::Process,
       **args
     )
-      deps_handler.verify_dependencies
+      @version = deps_handler.verify_dependencies
       args[:port] = port_checker.random_free_port unless args.include?(:port)
       @command_line_args, @port = args_builder.call(**args), args[:port]
       @deps_handler, @port_checker, @process = deps_handler, port_checker, process
