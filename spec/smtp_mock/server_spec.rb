@@ -15,9 +15,10 @@ RSpec.describe SmtpMock::Server do
       let(:args_builder) { class_double('CommandLineArgsBuilder') }
       let(:host) { random_ip_v4_address }
       let(:composed_command_with_args) { compose_command(converted_command_line_args) }
+      let(:version) { ::Array.new(3) { ::Random.rand(1..10) }.join('.') }
 
       before do
-        allow(deps_checker).to receive(:verify_dependencies)
+        allow(deps_checker).to receive(:verify_dependencies).and_return(version)
         allow(deps_checker)
           .to receive(:compose_command)
           .with(converted_command_line_args)
@@ -34,6 +35,7 @@ RSpec.describe SmtpMock::Server do
           expect(process).to receive(:create).with(composed_command_with_args).and_return(pid)
           expect(server_instance.pid).to eq(pid)
           expect(server_instance.port).to eq(port)
+          expect(server_instance.version).to eq(version)
         end
       end
 
@@ -46,6 +48,7 @@ RSpec.describe SmtpMock::Server do
           expect(process).to receive(:create).with(composed_command_with_args).and_return(pid)
           expect(server_instance.pid).to eq(pid)
           expect(server_instance.port).to eq(port)
+          expect(server_instance.version).to eq(version)
         end
       end
     end

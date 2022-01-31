@@ -163,7 +163,7 @@ RSpec.describe SmtpMock::Cli::Command do
 
         context 'when existent symlink' do
           let(:symlink) { '/usr/local/bin/existent-smtpmock' }
-          let(:binary_path) { '/some_ninary_path' }
+          let(:binary_path) { '/some_binary_path' }
 
           it 'removes symlink and binary file' do
             expect(SmtpMock::Dependency).to receive(:smtpmock_path_by_symlink).and_return(binary_path)
@@ -202,7 +202,7 @@ RSpec.describe SmtpMock::Cli::Command do
 
         context 'when existent symlink' do
           let(:symlink) { '/usr/local/bin/existent-smtpmock' }
-          let(:binary_path) { '/some_ninary_path' }
+          let(:binary_path) { '/some_binary_path' }
 
           it 'removes symlink and binary file' do
             expect(SmtpMock::Dependency).to receive(:smtpmock_path_by_symlink).and_return(binary_path)
@@ -220,6 +220,84 @@ RSpec.describe SmtpMock::Cli::Command do
       end
     end
 
+    context 'when upgrade key passed' do
+      %w[-g --upgrade].each do |key|
+        let(:command_line_args) { [key] }
+
+        before { stub_const('SmtpMock::Dependency::SYMLINK', symlink) }
+
+        context 'when non-existent symlink' do
+          let(:symlink) { '/usr/local/bin/non-existent-smtpmock' }
+
+          it 'not replaces binary file' do
+            expect(SmtpMock::Dependency).to receive(:smtpmock_path_by_symlink).and_return('')
+            expect { resolve }
+              .to change(command_instance, :message)
+              .from(nil).to('smtpmock not installed yet')
+              .and change(command_instance, :success)
+              .from(nil).to(true)
+          end
+        end
+
+        context 'when existent symlink' do
+          let(:symlink) { '/usr/local/bin/existent-smtpmock' }
+          let(:binary_dir) { '/some_binary_path' }
+          let(:binary_path) { "#{binary_dir}/binary" }
+
+          it 'replaces binary file' do
+            expect(SmtpMock::Dependency).to receive(:smtpmock_path_by_symlink).and_return(binary_path)
+            expect(::Kernel).to receive(:system).with("cd #{binary_dir} && curl -sL #{SmtpMock::Cli::Resolver::DOWNLOAD_SCRIPT} | bash")
+            expect { resolve }
+              .to change(command_instance, :message)
+              .from(nil).to('smtpmock was upgraded successfully')
+              .and change(command_instance, :success)
+              .from(nil).to(true)
+          end
+        end
+      end
+    end
+
+    context 'when sudo with upgrade key passed' do
+      [%w[-s -g], %w[--sudo --upgrade]].each do |keys|
+        let(:command_line_args) { keys }
+
+        before { stub_const('SmtpMock::Dependency::SYMLINK', symlink) }
+
+        context 'when non-existent symlink' do
+          let(:symlink) { '/usr/local/bin/non-existent-smtpmock' }
+
+          it 'not replaces binary file' do
+            expect(SmtpMock::Dependency).to receive(:smtpmock_path_by_symlink).and_return('')
+            expect { resolve }
+              .to change(command_instance, :sudo)
+              .from(nil).to(true)
+              .and change(command_instance, :message)
+              .from(nil).to('smtpmock not installed yet')
+              .and change(command_instance, :success)
+              .from(nil).to(true)
+          end
+        end
+
+        context 'when existent symlink' do
+          let(:symlink) { '/usr/local/bin/existent-smtpmock' }
+          let(:binary_dir) { '/some_binary_path' }
+          let(:binary_path) { "#{binary_dir}/binary" }
+
+          it 'replaces binary file' do
+            expect(SmtpMock::Dependency).to receive(:smtpmock_path_by_symlink).and_return(binary_path)
+            expect(::Kernel).to receive(:system).with("cd #{binary_dir} && curl -sL #{SmtpMock::Cli::Resolver::DOWNLOAD_SCRIPT} | bash")
+            expect { resolve }
+              .to change(command_instance, :sudo)
+              .from(nil).to(true)
+              .and change(command_instance, :message)
+              .from(nil).to('smtpmock was upgraded successfully')
+              .and change(command_instance, :success)
+              .from(nil).to(true)
+          end
+        end
+      end
+    end
+
     context 'when help key passed' do
       %w[-h --help].each do |key|
         let(:command_line_args) { [key] }
@@ -228,6 +306,7 @@ RSpec.describe SmtpMock::Cli::Command do
     -s, --sudo                       Run command as sudo
     -i, --install=PATH               Install smtpmock to the existing path
     -u, --uninstall                  Uninstall smtpmock
+    -g, --upgrade                    Upgrade to latest version of smtpmock
     -h, --help                       Prints help
 )
         end
@@ -253,6 +332,18 @@ RSpec.describe SmtpMock::Cli::Command do
     it { is_expected.to eq("#{install_path}/smtpmock") }
   end
 
+  describe '#install_to' do
+    subject(:install_to) { command_instance.send(:install_to, install_path) }
+
+    let(:install_path) { 'some_install_path' }
+    let(:command) { "cd #{install_path} && curl -sL #{SmtpMock::Cli::Resolver::DOWNLOAD_SCRIPT} | bash" }
+
+    it do
+      expect(::Kernel).to receive(:system).with(command)
+      install_to
+    end
+  end
+
   describe '#as_sudo' do
     subject(:as_sudo) { command_instance.send(:as_sudo) }
 
@@ -264,6 +355,38 @@ RSpec.describe SmtpMock::Cli::Command do
 
     context 'when sudo false' do
       it { is_expected.to be_nil }
+    end
+  end
+
+  describe '#current_smtpmock_path' do
+    subject(:current_smtpmock_path) { command_instance.send(:current_smtpmock_path) }
+
+    it 'memoizes current smtpmock path' do
+      expect(SmtpMock::Dependency).to receive(:smtpmock_path_by_symlink)
+      2.times { current_smtpmock_path }
+    end
+  end
+
+  describe '#not_installed?' do
+    subject(:not_installed?) { command_instance.send(:not_installed?) }
+
+    before { allow(SmtpMock::Dependency).to receive(:smtpmock_path_by_symlink).and_return(path_by_symlink) }
+
+    context 'when smtpmock have been installed' do
+      let(:path_by_symlink) { 'some_path' }
+
+      it { is_expected.to be(false) }
+    end
+
+    context 'when smtpmock have not been installed' do
+      let(:path_by_symlink) { '' }
+
+      it do
+        expect { not_installed? }
+          .to change(command_instance, :message)
+          .from(nil).to('smtpmock not installed yet')
+        expect(not_installed?).to be(true)
+      end
     end
   end
 end
