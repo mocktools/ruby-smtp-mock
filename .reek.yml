@@ -9,6 +9,7 @@ detectors:
       - SmtpMock::ServerHelper
       - SmtpMock::TestFramework::RSpec::Helper#smtp_mock_server
       - SmtpMock::ContextGeneratorHelper#random_message
+      - SmtpMock::Cli::Resolver#install_to
 
   NestedIterators:
     exclude:
