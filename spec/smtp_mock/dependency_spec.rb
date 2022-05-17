@@ -100,7 +100,7 @@ RSpec.describe SmtpMock::Dependency do
   end
 
   describe '.version' do
-    subject(:version) { described_class.send(:version) }
+    subject(:version) { described_class.version }
 
     before { allow(::Kernel).to receive(:`).with("#{SmtpMock::Dependency::BINARY_SHORTCUT} -v").and_return(ver) }
 

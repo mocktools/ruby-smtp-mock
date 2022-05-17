@@ -80,6 +80,7 @@ This gem includes easy system dependency manager. Run `bundle exec smtp_mock` wi
 | `-i`, `--install=PATH` | Install `smtpmock` to the existing path | `bundle exec smtp_mock -i ~/existent_dir` |
 | `-u`, `--uninstall` | Uninstall `smtpmock` | `bundle exec smtp_mock -u` |
 | `-g`, `--upgrade` | Upgrade to latest version of `smtpmock` | `bundle exec smtp_mock -g` |
+| `-v`, `--version` | Prints current version of `smtpmock` | `bundle exec smtp_mock -v` |
 | `-h`, `--help` | Prints help | `bundle exec smtp_mock -h` |
 
 ### DSL

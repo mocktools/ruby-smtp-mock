@@ -298,6 +298,35 @@ RSpec.describe SmtpMock::Cli::Command do
       end
     end
 
+    context 'when version key passed' do
+      [%w[-v], %w[--version]].each do |keys|
+        let(:command_line_args) { keys }
+        let(:version) { random_sem_version }
+
+        context 'when smtpmock is already installed' do
+          it 'returns current version of smtpmock' do
+            expect(::SmtpMock::Dependency).to receive(:version).and_return(version)
+            expect { resolve }
+              .to change(command_instance, :message)
+              .from(nil).to(version)
+              .and change(command_instance, :success)
+              .from(nil).to(true)
+          end
+        end
+
+        context 'when smtpmock is not installed yet' do
+          it 'not returns current version of smtpmock' do
+            expect(::SmtpMock::Dependency).to receive(:smtpmock_path_by_symlink).and_return([])
+            expect { resolve }
+              .to change(command_instance, :message)
+              .from(nil).to('smtpmock not installed yet')
+              .and change(command_instance, :success)
+              .from(nil).to(true)
+          end
+        end
+      end
+    end
+
     context 'when help key passed' do
       %w[-h --help].each do |key|
         let(:command_line_args) { [key] }
@@ -307,6 +336,7 @@ RSpec.describe SmtpMock::Cli::Command do
     -i, --install=PATH               Install smtpmock to the existing path
     -u, --uninstall                  Uninstall smtpmock
     -g, --upgrade                    Upgrade to latest version of smtpmock
+    -v, --version                    Prints current smtpmock version
     -h, --help                       Prints help
 )
         end

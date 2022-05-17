@@ -26,14 +26,14 @@ module SmtpMock
         "#{SmtpMock::Dependency::BINARY_SHORTCUT} #{command_line_args}".strip
       end
 
-      private
-
       def version
         ::Kernel.public_send(
           :`,
           "#{SmtpMock::Dependency::BINARY_SHORTCUT} -v"
         )[SmtpMock::Dependency::VERSION_REGEX_PATTERN, 1]
       end
+
+      private
 
       def minimal_version?(current_version)
         !!current_version && current_version >= SmtpMock::SMTPMOCK_MIN_VERSION
