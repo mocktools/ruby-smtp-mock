@@ -14,13 +14,13 @@ detectors:
   NestedIterators:
     exclude:
       - SmtpMock::CommandLineArgsBuilder#define_attribute
-      - SmtpMock::Cli::Resolver#resolve
 
   TooManyStatements:
     exclude:
-      - SmtpMock::Cli::Resolver#resolve
       - SmtpMock::Server#run
       - SmtpMock::ServerHelper#create_fake_servers
+      - SmtpMock::Cli::Resolver#install
+      - SmtpMock::Cli::Resolver#resolve
 
   TooManyInstanceVariables:
     exclude:
