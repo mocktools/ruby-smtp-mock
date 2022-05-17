@@ -30,6 +30,10 @@ module SmtpMock
       FFaker::Lorem.sentence
     end
 
+    def random_sem_version
+      ::Array.new(3) { rand(0..42) }.join('.')
+    end
+
     private
 
     def ffaker

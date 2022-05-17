@@ -42,4 +42,17 @@ RSpec.describe SmtpMock::ContextGeneratorHelper, type: :helper do # rubocop:disa
       expect(random_signal).to be_an_instance_of(::Integer)
     end
   end
+
+  describe '#random_message' do
+    it 'returns random message' do
+      expect(::FFaker::Lorem).to receive(:sentence).and_call_original
+      expect(random_message).to be_an_instance_of(::String)
+    end
+  end
+
+  describe '#random_sem_version' do
+    it 'returns random semantic version' do
+      expect(random_sem_version).to match(/(\d+)(\.\g<1>){2}/)
+    end
+  end
 end
