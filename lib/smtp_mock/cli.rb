@@ -3,7 +3,7 @@
 module SmtpMock
   module Cli
     Command = ::Struct.new(:install_path, :sudo, :success, :message) do
-      include Resolver
+      include SmtpMock::Cli::Resolver
     end
 
     def self.call(command_line_args, command = SmtpMock::Cli::Command)
