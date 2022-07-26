@@ -41,6 +41,9 @@ RSpec.describe SmtpMock::CommandLineArgsBuilder do
             msg_data_received
             msg_msg_size_is_too_big
             msg_msg_received
+            msg_invalid_cmd_rset_sequence
+            msg_invalid_cmd_rset_arg
+            msg_rset_received
             msg_quit_cmd
           ].zip('a'..'z').to_h
         end
@@ -52,6 +55,7 @@ RSpec.describe SmtpMock::CommandLineArgsBuilder do
             session_timeout: session_timeout,
             shutdown_timeout: shutdown_timeout,
             fail_fast: true,
+            multiple_message_receiving: true,
             msg_size_limit: msg_size_limit,
             blacklisted_helo_domains: blacklisted_helo_domains,
             blacklisted_mailfrom_emails: blacklisted_mailfrom_emails,
@@ -79,15 +83,19 @@ RSpec.describe SmtpMock::CommandLineArgsBuilder do
 -msgInvalidCmdMailfromSequence="g"
 -msgInvalidCmdRcpttoArg="l"
 -msgInvalidCmdRcpttoSequence="k"
+-msgInvalidCmdRsetArg="u"
+-msgInvalidCmdRsetSequence="t"
 -msgMailfromBlacklistedEmail="i"
 -msgMailfromReceived="j"
 -msgMsgReceived="s"
 -msgMsgSizeIsTooBig="r"
--msgQuitCmd="t"
+-msgQuitCmd="w"
 -msgRcpttoBlacklistedEmail="n"
 -msgRcpttoNotRegisteredEmail="m"
 -msgRcpttoReceived="o"
+-msgRsetReceived="v"
 -msgSizeLimit=#{msg_size_limit}
+-multipleMessageReceiving
 -notRegisteredEmails="#{not_registered_emails.join(',')}"
 -port=#{port}
 -sessionTimeout=#{session_timeout}
