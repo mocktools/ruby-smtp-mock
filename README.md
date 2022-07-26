@@ -95,10 +95,18 @@ This gem includes easy system dependency manager. Run `bundle exec smtp_mock` wi
 | `session_timeout: 60` | Session timeout in seconds. It's equal to 30 seconds by default |
 | `shutdown_timeout: 5` | Graceful shutdown timeout in seconds. It's equal to 1 second by default |
 | `fail_fast: true` | Enables fail fast scenario. Disabled by default |
+| `multipleMessageReceiving: true` | Enables multiple message receiving scenario. Disabled by default |
 | `blacklisted_helo_domains: %w[a.com b.com]` | Blacklisted `HELO` domains |
 | `blacklisted_mailfrom_emails: %w[a@a.com b@b.com]` | Blacklisted `MAIL FROM` emails |
 | `blacklisted_rcptto_emails: %w[c@c.com d@d.com]` | blacklisted `RCPT TO` emails |
 | `not_registered_emails: %w[e@e.com f@f.com]` | Not registered (non-existent) `RCPT TO` emails |
+| `response_delay_helo: 2` | `HELO` response delay in seconds. It's equal to 0 seconds by default |
+| `response_delay_mailfrom: 2` | `MAIL FROM` response delay in seconds. It's equal to 0 seconds by default |
+| `response_delay_rcptto: 2` | `RCPT TO` response delay in seconds. It's equal to 0 seconds by default |
+| `response_delay_data: 2` | `DATA` response delay in seconds. It's equal to 0 seconds by default |
+| `response_delay_message: 2` | Message response delay in seconds. It's equal to 0 seconds by default |
+| `response_delay_rset: 2` | `RSET` response delay in seconds. It's equal to 0 seconds by default |
+| `response_delay_quit: 2` | `QUIT` response delay in seconds. It's equal to 0 seconds by default |
 | `msg_size_limit: 42` | Message body size limit in bytes. It's equal to 10485760 bytes by default |
 | `msg_greeting: 'Greeting message'` | Custom server greeting message |
 | `msg_invalid_cmd: 'Invalid command message'` | Custom invalid command message |
@@ -118,7 +126,9 @@ This gem includes easy system dependency manager. Run `bundle exec smtp_mock` wi
 | `msg_invalid_cmd_data_sequence: 'Invalid command DATA sequence message'` | Custom invalid command `DATA` sequence message |
 | `msg_data_received: 'DATA received message'` | Custom `DATA` received message |
 | `msg_msg_size_is_too_big: 'Message size is too big'` | Custom size is too big message |
-| `msg_msg_received: 'Message has been received'` | Custom received message body message |
+| `msg_invalid_cmd_rset_sequence: 'Invalid command RSET sequence message'` | Custom invalid command `RSET` sequence message |
+| `msg_invalid_cmd_rset_arg: 'Invalid command RSET argument message'` | Custom invalid command `RSET` argument message |
+| `msg_rset_received: 'RSET received message'` | Custom `RSET` received message |
 | `msg_quit_cmd: 'Quit command message'` | Custom quit command message |
 
 #### Example of usage

@@ -14,11 +14,18 @@ module SmtpMock
         blacklisted_rcptto_emails
         not_registered_emails
       ].freeze,
-      SmtpMock::Types::Bool.constrained(eql: true) => %i[log fail_fast].freeze,
+      SmtpMock::Types::Bool.constrained(eql: true) => %i[log fail_fast multiple_message_receiving].freeze,
       SmtpMock::Types::Integer.constrained(gteq: 1) => %i[
         port
         session_timeout
         shutdown_timeout
+        response_delay_helo
+        response_delay_mailfrom
+        response_delay_rcptto
+        response_delay_data
+        response_delay_message
+        response_delay_rset
+        response_delay_quit
         msg_size_limit
       ].freeze,
       SmtpMock::Types::String => %i[
@@ -41,6 +48,9 @@ module SmtpMock
         msg_data_received
         msg_msg_size_is_too_big
         msg_msg_received
+        msg_invalid_cmd_rset_sequence
+        msg_invalid_cmd_rset_arg
+        msg_rset_received
         msg_quit_cmd
       ].freeze
     }.freeze
