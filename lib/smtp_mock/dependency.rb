@@ -36,7 +36,7 @@ module SmtpMock
       private
 
       def minimal_version?(current_version)
-        !!current_version && current_version >= SmtpMock::SMTPMOCK_MIN_VERSION
+        !!current_version && ::Gem::Version.new(current_version) >= ::Gem::Version.new(SmtpMock::SMTPMOCK_MIN_VERSION)
       end
     end
   end
