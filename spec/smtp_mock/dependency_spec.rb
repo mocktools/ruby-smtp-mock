@@ -43,6 +43,12 @@ RSpec.describe SmtpMock::Dependency do
         expect(described_class).to receive(:version).and_return(SmtpMock::SMTPMOCK_MIN_VERSION)
         expect(verify_dependencies).to match(/(\d+)(\.\g<1>){2}/)
       end
+
+      it 'not raises SmtpMock::Error::Dependency error in case of comparing greater semantic version' do
+        expect(described_class).to receive(:smtpmock?).and_return(true)
+        expect(described_class).to receive(:version).and_return('1.10.0')
+        expect(verify_dependencies).to match(/(\d+)(\.\g<1>){2}/)
+      end
     end
 
     context 'when not supported smtpmock version installed' do
