@@ -6,7 +6,6 @@
 [![Gem Version](https://badge.fury.io/rb/smtp_mock.svg)](https://badge.fury.io/rb/smtp_mock)
 [![Downloads](https://img.shields.io/gem/dt/smtp_mock.svg?colorA=004d99&colorB=0073e6)](https://rubygems.org/gems/smtp_mock)
 [![GitHub](https://img.shields.io/github/license/mocktools/ruby-smtp-mock)](LICENSE.txt)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmocktools%2Fruby-smtp-mock.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmocktools%2Fruby-smtp-mock?ref=badge_shield)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
 💎 Ruby SMTP mock - flexible Ruby wrapper over [`smtpmock`](https://github.com/mocktools/go-smtp-mock). Mimic any 📤 SMTP server behaviour for your test environment and even more.
