@@ -55,6 +55,7 @@ RSpec.describe SmtpMock::CommandLineArgsBuilder do
             session_timeout: session_timeout,
             shutdown_timeout: shutdown_timeout,
             fail_fast: true,
+            multiple_rcptto: true,
             multiple_message_receiving: true,
             msg_size_limit: msg_size_limit,
             blacklisted_helo_domains: blacklisted_helo_domains,
@@ -96,6 +97,7 @@ RSpec.describe SmtpMock::CommandLineArgsBuilder do
 -msgRsetReceived="v"
 -msgSizeLimit=#{msg_size_limit}
 -multipleMessageReceiving
+-multipleRcptto
 -notRegisteredEmails="#{not_registered_emails.join(',')}"
 -port=#{port}
 -sessionTimeout=#{session_timeout}

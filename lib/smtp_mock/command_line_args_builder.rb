@@ -14,7 +14,7 @@ module SmtpMock
         blacklisted_rcptto_emails
         not_registered_emails
       ].freeze,
-      SmtpMock::Types::Bool.constrained(eql: true) => %i[log fail_fast multiple_message_receiving].freeze,
+      SmtpMock::Types::Bool.constrained(eql: true) => %i[log fail_fast multiple_rcptto multiple_message_receiving].freeze,
       SmtpMock::Types::Integer.constrained(gteq: 1) => %i[
         port
         session_timeout

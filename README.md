@@ -5,6 +5,7 @@
 [![CircleCI](https://circleci.com/gh/mocktools/ruby-smtp-mock/tree/master.svg?style=svg)](https://circleci.com/gh/mocktools/ruby-smtp-mock/tree/master)
 [![Gem Version](https://badge.fury.io/rb/smtp_mock.svg)](https://badge.fury.io/rb/smtp_mock)
 [![Downloads](https://img.shields.io/gem/dt/smtp_mock.svg?colorA=004d99&colorB=0073e6)](https://rubygems.org/gems/smtp_mock)
+[![In Awesome Ruby](https://raw.githubusercontent.com/sindresorhus/awesome/main/media/mentioned-badge.svg)](https://github.com/markets/awesome-ruby)
 [![GitHub](https://img.shields.io/github/license/mocktools/ruby-smtp-mock)](LICENSE.txt)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
@@ -95,6 +96,7 @@ This gem includes easy system dependency manager. Run `bundle exec smtp_mock` wi
 | `session_timeout: 60` | Session timeout in seconds. It's equal to 30 seconds by default |
 | `shutdown_timeout: 5` | Graceful shutdown timeout in seconds. It's equal to 1 second by default |
 | `fail_fast: true` | Enables fail fast scenario. Disabled by default |
+| `multiple_rcptto: true` | Enables multiple `RCPT TO` receiving scenario. Disabled by default |
 | `multiple_message_receiving: true` | Enables multiple message receiving scenario. Disabled by default |
 | `blacklisted_helo_domains: %w[a.com b.com]` | Blacklisted `HELO` domains |
 | `blacklisted_mailfrom_emails: %w[a@a.com b@b.com]` | Blacklisted `MAIL FROM` emails |
