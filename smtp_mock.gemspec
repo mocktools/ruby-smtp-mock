@@ -23,16 +23,18 @@ Gem::Specification.new do |spec|
   }
 
   spec.required_ruby_version = '>= 2.5.0'
+  current_ruby_version = ::Gem::Version.new(::RUBY_VERSION)
+  dry_struct_version = current_ruby_version >= ::Gem::Version.new('2.7.0') ? '~> 1.6' : '~> 1.4'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.executables   = %w[smtp_mock]
   spec.require_paths = %w[lib]
   spec.post_install_message = 'smtpmock is required system dependency. For more details run: `bundle exec smtp_mock -h`'
 
-  spec.add_runtime_dependency 'dry-struct', '~> 1.4'
+  spec.add_runtime_dependency 'dry-struct', dry_struct_version
 
   spec.add_development_dependency 'ffaker', '~> 2.21'
-  spec.add_development_dependency 'net-smtp', '~> 0.3.2' if ::RUBY_VERSION >= '3.1.0'
+  spec.add_development_dependency 'net-smtp', '~> 0.3.3' if current_ruby_version >= ::Gem::Version.new('3.1.0')
   spec.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'
-  spec.add_development_dependency 'rspec', '~> 3.11'
+  spec.add_development_dependency 'rspec', '~> 3.12'
 end
