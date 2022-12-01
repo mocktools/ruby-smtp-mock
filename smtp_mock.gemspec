@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'smtp_mock'
   spec.version       = SmtpMock::VERSION
   spec.authors       = ['Vladislav Trotsenko']
-  spec.email         = ['admin@bestweb.com.ua']
+  spec.email         = %w[admin@bestweb.com.ua]
 
   spec.summary       = %(smtp_mock)
   spec.description   = %(💎 Ruby SMTP mock. Mimic any SMTP server behaviour for your test environment.)
@@ -22,12 +22,12 @@ Gem::Specification.new do |spec|
     'bug_tracker_uri' => 'https://github.com/mocktools/ruby-smtp-mock/issues'
   }
 
-  spec.required_ruby_version = '>= 2.5.0'
   current_ruby_version = ::Gem::Version.new(::RUBY_VERSION)
   dry_struct_version = current_ruby_version >= ::Gem::Version.new('2.7.0') ? '~> 1.6' : '~> 1.4'
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.executables   = %w[smtp_mock]
+  spec.required_ruby_version = '>= 2.5.0'
+  spec.files = `git ls-files -z`.split("\x0").select { |f| f.match(%r{^(bin|lib|tmp)/|.ruby-version|smtp_mock.gemspec|LICENSE}) }
+  spec.executables = %w[smtp_mock]
   spec.require_paths = %w[lib]
   spec.post_install_message = 'smtpmock is required system dependency. For more details run: `bundle exec smtp_mock -h`'
 
