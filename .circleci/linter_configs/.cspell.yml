@@ -1,0 +1,29 @@
+---
+
+enableGlobDot: true
+
+patterns:
+  - name: GithubUser
+    pattern: /\[@.+\]/gmx
+  - name: MarkdownCode
+    pattern: /`{1,3}.+`{1,3}/gmx
+  - name: MarkdownCodeBlock
+    pattern: /^\s*```[\s\S]*?^\s*```/gmx
+
+languageSettings:
+  - languageId: markdown
+    ignoreRegExpList:
+      - Email
+      - GithubUser
+      - MarkdownCode
+      - MarkdownCodeBlock
+
+words:
+  - Commiting
+  - PORO
+  - Trotsenko
+  - Vladislav
+  - bestwebua
+  - codebases
+  - gemspecs
+  - kwarg
