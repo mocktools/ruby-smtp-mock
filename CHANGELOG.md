@@ -2,6 +2,27 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2] - 2022-12-12
+
+### Added
+
+- Added [`cspell`](https://cspell.org) linter
+- Added [`markdownlint`](https://github.com/DavidAnson/markdownlint) linter
+- Added [`shellcheck`](https://www.shellcheck.net) linter
+- Added [`yamllint`](https://yamllint.readthedocs.io) linter
+
+### Fixed
+
+- Fixed typos in project's codebase
+- Fixed new project's linter issues
+
+### Updated
+
+- Updated `CircleCI` config
+- Updated [`lefthook`](https://github.com/evilmartians/lefthook) linters aggregator config
+- Updated releasing script, gemspecs
+- Updated gem version
+
 ## [1.3.1] - 2022-12-01
 
 ### Added
@@ -13,7 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Updated
 
 - Updated gemspecs
-- Updated codeclimate/circleci configs
+- Updated `codeclimate`/`circleci` configs
 - Updated gem development dependencies
 - Updated gem version
 
@@ -30,7 +51,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Updated
 
 - Updated `SmtpMock::Types::Bool`, tests
-- Updated codeclimate/circleci configs
+- Updated `codeclimate`/`circleci` configs
 - Updated gemspecs
 - Updated gem runtime/development dependencies
 - Updated gem documentation, version
@@ -45,7 +66,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Updated gemspecs
 - Updated tests
-- Updated codeclimate/circleci configs
+- Updated `codeclimate`/`circleci` configs
 - Updated gem development dependencies
 - Updated gem version
 
@@ -71,7 +92,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Updated gemspecs
 - Updated tests
-- Updated rubocop/codeclimate/circleci configs
+- Updated `rubocop`/`codeclimate`/`circleci` configs
 - Updated gem development dependencies
 - Updated gem documentation, version
 
@@ -84,7 +105,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Updated
 
 - Updated gemspecs
-- Updated codeclimate/circleci configs
+- Updated `codeclimate`/`circleci` configs
 - Updated gem development dependencies
 - Updated gem version
 
@@ -97,7 +118,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Updated
 
 - Updated gemspecs
-- Updated codeclimate/circleci configs
+- Updated `codeclimate`/`circleci` configs
 - Updated gem development dependencies
 - Updated gem version
 
@@ -128,7 +149,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Updated
 
 - Updated gem documentation
-- Updated codeclimate config
+- Updated `codeclimate` config
 
 ## [0.1.0] - 2022-01-18
 

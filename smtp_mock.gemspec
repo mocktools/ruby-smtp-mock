@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = %w[admin@bestweb.com.ua]
 
   spec.summary       = %(smtp_mock)
-  spec.description   = %(💎 Ruby SMTP mock. Mimic any SMTP server behaviour for your test environment.)
+  spec.description   = %(💎 Ruby SMTP mock. Mimic any SMTP server behavior for your test environment.)
 
   spec.homepage      = 'https://github.com/mocktools/ruby-smtp-mock'
   spec.license       = 'MIT'

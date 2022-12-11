@@ -1,4 +1,4 @@
-# ![Ruby SmtpMock - mimic any 📤 SMTP server behaviour for your test environment with fake SMTP server](https://repository-images.githubusercontent.com/443795043/81ce5b00-0915-4dd0-93ad-88e6699e18cd)
+# ![Ruby SmtpMock - mimic any 📤 SMTP server behavior for your test environment with fake SMTP server](https://repository-images.githubusercontent.com/443795043/81ce5b00-0915-4dd0-93ad-88e6699e18cd)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/315c5fff7449a11868dd/maintainability)](https://codeclimate.com/github/mocktools/ruby-smtp-mock/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/315c5fff7449a11868dd/test_coverage)](https://codeclimate.com/github/mocktools/ruby-smtp-mock/test_coverage)
@@ -9,7 +9,7 @@
 [![GitHub](https://img.shields.io/github/license/mocktools/ruby-smtp-mock)](LICENSE.txt)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
-💎 Ruby SMTP mock - flexible Ruby wrapper over [`smtpmock`](https://github.com/mocktools/go-smtp-mock). Mimic any 📤 SMTP server behaviour for your test environment and even more.
+💎 Ruby SMTP mock - flexible Ruby wrapper over [`smtpmock`](https://github.com/mocktools/go-smtp-mock). Mimic any 📤 SMTP server behavior for your test environment and even more.
 
 ## Table of Contents
 
@@ -34,7 +34,7 @@
 
 ## Features
 
-- Ability to handle configurable behaviour and life cycles of SMTP mock server(s)
+- Ability to handle configurable behavior and life cycles of SMTP mock server(s)
 - Dynamic/manual port assignment
 - Test framework agnostic (it's PORO, so you can use it outside of `RSpec`, `Test::Unit` or `MiniTest`)
 - Simple and intuitive DSL
@@ -96,7 +96,7 @@ This gem includes easy system dependency manager. Run `bundle exec smtp_mock` wi
 
 | Example of usage kwarg | Description |
 | --- | --- |
-| `host: '0.0.0.0'` | Host address where smtpmock will run. It's equal to 127.0.0.1 by default |
+| `host: '0.0.0.0'` | Host address where `smtpmock` will run. It's equal to 127.0.0.1 by default |
 | `port: 2525` | Server port number. If not specified it will be assigned dynamically |
 | `log: true` | Enables log server activity. Disabled by default |
 | `session_timeout: 60` | Session timeout in seconds. It's equal to 30 seconds by default |
@@ -143,7 +143,7 @@ This gem includes easy system dependency manager. Run `bundle exec smtp_mock` wi
 
 ```ruby
 # Public SmtpMock interface
-# Without kwargs creates SMTP mock server with default behaviour.
+# Without kwargs creates SMTP mock server with default behavior.
 # A free port for server will be randomly assigned in the range
 # from 49152 to 65535. Returns current smtp mock server instance
 smtp_mock_server = SmtpMock.start_server(not_registered_emails: %w[user@example.com]) # => SmtpMock::Server instance
