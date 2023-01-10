@@ -57,7 +57,7 @@ release_to_github() {
 }
 
 update_develop_branch() {
-  echo "Updating develop branch with new release tag"
+  echo "Updating develop branch with new release tag..."
   git checkout develop
   git merge "$release_candidate_tag" --ff --no-edit
   git push origin develop
