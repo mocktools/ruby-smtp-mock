@@ -12,7 +12,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/mocktools/ruby-smtp-mock'
   spec.license       = 'MIT'
 
-  dry_struct_version = ::Gem::Version.new(::RUBY_VERSION) >= ::Gem::Version.new('2.7.0') ? '~> 1.6' : '~> 1.4'
+  current_ruby_version = ::Gem::Version.new(::RUBY_VERSION)
+  dry_struct_version = current_ruby_version >= ::Gem::Version.new('2.7.0') ? '~> 1.6' : '~> 1.4'
 
   spec.required_ruby_version = '>= 2.5.0'
   spec.files = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
@@ -22,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'dry-struct', dry_struct_version
 
   spec.add_development_dependency 'ffaker'
+  spec.add_development_dependency 'net-smtp' if current_ruby_version >= ::Gem::Version.new('3.1.0')
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec'
 end
