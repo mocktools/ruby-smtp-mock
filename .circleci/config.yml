@@ -11,13 +11,6 @@ orbs:
   ruby: circleci/ruby@2.0.0
 
 references:
-  restore_bundle_cache: &restore_bundle_cache
-    restore_cache:
-      keys:
-        - ruby-smtp-mock-{{ checksum "smtp_mock.gemspec" }}
-      paths:
-        - ~/vendor/bundle
-
   bundle_install: &bundle_install
     run:
       name: Installing gems
@@ -25,17 +18,10 @@ references:
             bundle config set --local path '~/vendor/bundle'
             bundle install
 
-  save_bundle_cache: &save_bundle_cache
-    save_cache:
-      key: ruby-smtp-mock-{{ checksum "smtp_mock.gemspec" }}
-      paths:
-        - ~/vendor/bundle
-
-  system_dependencies: &system_dependencies
+  install_system_dependencies: &install_system_dependencies
     run:
-      name: Installing system requirements
-      command: |
-            bundle exec smtp_mock -s -i ~
+      name: Installing system dependencies
+      command: bundle exec smtp_mock -s -i ~
 
   install_linters: &install_linters
     run:
@@ -54,6 +40,11 @@ references:
       command: |
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
+
+  use_latest_bundler: &use_latest_bundler
+    run:
+      name: Using latest bundler
+      command: gem install bundler
 
   use_latest_gemspec: &use_latest_gemspec
     run:
@@ -76,10 +67,9 @@ jobs:
     steps:
       - checkout
 
+      - <<: *use_latest_bundler
       - <<: *use_latest_gemspec
-      - <<: *restore_bundle_cache
       - <<: *bundle_install
-      - <<: *save_bundle_cache
       - <<: *install_linters
 
       - run:
@@ -112,11 +102,10 @@ jobs:
     steps:
       - checkout
 
+      - <<: *use_latest_bundler
       - <<: *use_latest_gemspec
-      - <<: *restore_bundle_cache
       - <<: *bundle_install
-      - <<: *save_bundle_cache
-      - <<: *system_dependencies
+      - <<: *install_system_dependencies
       - <<: *install_codeclimate_reporter
 
       - run:
@@ -157,7 +146,7 @@ jobs:
           with-cache: false
           path: '~/vendor/custom_bundle'
 
-      - <<: *system_dependencies
+      - <<: *install_system_dependencies
 
       - run:
           name: Running compatibility tests
