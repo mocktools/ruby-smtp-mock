@@ -73,7 +73,7 @@ module SmtpMock
       end
 
       def as_sudo
-        return 'sudo ' if sudo
+        'sudo ' if sudo
       end
 
       def current_smtpmock_path
