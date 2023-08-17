@@ -88,6 +88,9 @@ Layout/EmptyLineAfterGuardClause:
 Gemspec/RequireMFA:
   Enabled: false
 
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
 # Performance -----------------------------------------------------------------
 
 Performance/MethodObjectAsBlock:
