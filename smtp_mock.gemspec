@@ -34,7 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'dry-struct', dry_struct_version
 
   spec.add_development_dependency 'ffaker', '~> 2.21'
-  spec.add_development_dependency 'net-smtp', '~> 0.3.3' if current_ruby_version >= ::Gem::Version.new('3.1.0')
+  spec.add_development_dependency 'net-smtp', '~> 0.4.0' if current_ruby_version >= ::Gem::Version.new('3.1.0')
   spec.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'
   spec.add_development_dependency 'rspec', '~> 3.12'
 end
