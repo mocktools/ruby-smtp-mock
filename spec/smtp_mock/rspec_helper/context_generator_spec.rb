@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe SmtpMock::ContextGeneratorHelper, type: :helper do # rubocop:disable RSpec/FilePath
+RSpec.describe SmtpMock::RspecHelper::ContextGenerator, type: :helper do
   describe '#random_ip_v4_address' do
     it 'returns random ip v4 address' do
       expect(FFaker::Internet).to receive(:ip_v4_address).and_call_original

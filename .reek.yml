@@ -7,11 +7,13 @@ detectors:
   UtilityFunction:
     exclude:
       - SmtpMock::CommandLineArgsBuilder#to_camel_case
-      - SmtpMock::DependencyHelper#compose_command
+      - SmtpMock::Cli::Resolver#install_to
       - SmtpMock::ServerHelper
       - SmtpMock::TestFramework::RSpec::Helper#smtp_mock_server
-      - SmtpMock::ContextGeneratorHelper#random_message
-      - SmtpMock::Cli::Resolver#install_to
+      - SmtpMock::RspecHelper::ContextGenerator#random_message
+      - SmtpMock::RspecHelper::Dependency#compose_command
+      - SmtpMock::RspecHelper::Server#create_fake_servers
+      - SmtpMock::RspecHelper::Server#reset_err_log
 
   NestedIterators:
     exclude:
@@ -20,9 +22,9 @@ detectors:
   TooManyStatements:
     exclude:
       - SmtpMock::Server#run
-      - SmtpMock::ServerHelper#create_fake_servers
       - SmtpMock::Cli::Resolver#install
       - SmtpMock::Cli::Resolver#resolve
+      - SmtpMock::RspecHelper::Server#create_fake_servers
 
   TooManyInstanceVariables:
     exclude:
@@ -30,4 +32,4 @@ detectors:
 
   LongParameterList:
     exclude:
-      - SmtpMock::ClientHelper#smtp_request
+      - SmtpMock::RspecHelper::Client#smtp_request

@@ -19,10 +19,10 @@ RSpec.configure do |config|
   config.disable_monkey_patching!
   config.order = :random
 
-  config.include SmtpMock::ContextGeneratorHelper
-  config.include SmtpMock::DependencyHelper
-  config.include SmtpMock::ServerHelper
-  config.include SmtpMock::ClientHelper
+  config.include SmtpMock::RspecHelper::ContextGenerator
+  config.include SmtpMock::RspecHelper::Dependency
+  config.include SmtpMock::RspecHelper::Server
+  config.include SmtpMock::RspecHelper::Client
 
   ::Kernel.srand(config.seed)
 end

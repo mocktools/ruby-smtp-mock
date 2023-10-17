@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe SmtpMock::ClientHelper::SmtpClient, type: :helper do # rubocop:disable RSpec/FilePath
+RSpec.describe SmtpMock::RspecHelper::Client::SmtpClient, type: :helper do
   subject(:smtp_client_instance) { described_class.new(host, port, net_class) }
 
   let(:host) { random_hostname }

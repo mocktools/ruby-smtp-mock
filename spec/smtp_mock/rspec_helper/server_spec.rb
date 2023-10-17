@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe SmtpMock::ServerHelper, type: :helper do # rubocop:disable RSpec/FilePath
+RSpec.describe SmtpMock::RspecHelper::Server, type: :helper do
   describe '#create_fake_servers' do
     subject(:fake_servers) { create_fake_servers(**options) }
 
