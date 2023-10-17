@@ -118,7 +118,7 @@ RSpec.describe SmtpMock do
             rcptto: rcptto,
             message: random_message
           )
-        end.to raise_error(SmtpMock::ClientHelper::SmtpClient::Error, expected_response_message)
+        end.to raise_error(SmtpMock::RspecHelper::Client::SmtpClient::Error, expected_response_message)
 
         smtp_mock_server.stop!
       end

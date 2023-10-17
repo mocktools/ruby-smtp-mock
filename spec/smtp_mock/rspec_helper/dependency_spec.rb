@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe SmtpMock::DependencyHelper, type: :helper do # rubocop:disable RSpec/FilePath
+RSpec.describe SmtpMock::RspecHelper::Dependency, type: :helper do
   describe '#compose_command' do
     let(:command_line_args) { '-a -b 42' }
 
