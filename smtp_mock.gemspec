@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Vladislav Trotsenko']
   spec.email         = %w[admin@bestweb.com.ua]
 
-  spec.summary       = %(smtp_mock)
+  spec.summary       = %(💎 Ruby SMTP mock. Mimic any SMTP server behavior for your test environment)
   spec.description   = %(💎 Ruby SMTP mock. Mimic any SMTP server behavior for your test environment.)
 
   spec.homepage      = 'https://github.com/mocktools/ruby-smtp-mock'
@@ -35,7 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'dry-struct', dry_struct_version
 
   spec.add_development_dependency 'ffaker', ffaker_version
-  spec.add_development_dependency 'net-smtp', '~> 0.4.0' if current_ruby_version >= ::Gem::Version.new('3.1.0')
+  spec.add_development_dependency 'net-smtp', '~> 0.4.0.1' if current_ruby_version >= ::Gem::Version.new('3.1.0')
   spec.add_development_dependency 'rake', '~> 13.1'
-  spec.add_development_dependency 'rspec', '~> 3.12'
+  spec.add_development_dependency 'rspec', '~> 3.13'
 end
