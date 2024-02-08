@@ -52,7 +52,7 @@ RSpec.describe SmtpMock::RspecHelper::ContextGenerator, type: :helper do
 
   describe '#random_sem_version' do
     it 'returns random semantic version' do
-      expect(random_sem_version).to match(/(\d+)(\.\g<1>){2}/)
+      expect(random_sem_version).to match_semver_regex_pattern
     end
   end
 end
