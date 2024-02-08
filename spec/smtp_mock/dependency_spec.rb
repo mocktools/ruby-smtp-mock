@@ -41,13 +41,13 @@ RSpec.describe SmtpMock::Dependency do
       it 'not raises SmtpMock::Error::Dependency error' do
         expect(described_class).to receive(:smtpmock?).and_return(true)
         expect(described_class).to receive(:version).and_return(SmtpMock::SMTPMOCK_MIN_VERSION)
-        expect(verify_dependencies).to match(/(\d+)(\.\g<1>){2}/)
+        expect(verify_dependencies).to match_semver_regex_pattern
       end
 
       it 'not raises SmtpMock::Error::Dependency error in case of comparing greater semantic version' do
         expect(described_class).to receive(:smtpmock?).and_return(true)
         expect(described_class).to receive(:version).and_return('1.10.0')
-        expect(verify_dependencies).to match(/(\d+)(\.\g<1>){2}/)
+        expect(verify_dependencies).to match_semver_regex_pattern
       end
     end
 
@@ -119,7 +119,7 @@ RSpec.describe SmtpMock::Dependency do
     context 'when it was possible to determine smtpmock version' do
       let(:ver) { "smtpmock: 3.14.0\ncommit: 2128506\nbuilt at: 2022-01-31T23:32:59Z" }
 
-      it { is_expected.to match(/(\d+)(\.\g<1>){2}/) }
+      it { is_expected.to match_semver_regex_pattern }
     end
   end
 
