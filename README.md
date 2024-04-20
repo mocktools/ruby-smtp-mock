@@ -151,7 +151,7 @@ smtp_mock_server = SmtpMock.start_server(not_registered_emails: %w[user@example.
 # returns current smtp mock server port
 smtp_mock_server.port # => 55640
 
-# returns current smtp mock server port
+# returns current smtp mock server process identification number (PID)
 smtp_mock_server.pid # => 38195
 
 # returns current smtp mock server version
